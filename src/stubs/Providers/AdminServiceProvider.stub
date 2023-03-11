@@ -1,0 +1,234 @@
+<?php
+
+namespace App\Providers;
+
+use App\Console\ActionCommand;
+use App\Console\AdminCommand;
+use App\Console\ConfigCommand;
+use App\Console\ControllerCommand;
+use App\Console\CreateUserCommand;
+use App\Console\ExportSeedCommand;
+use App\Console\ExtendCommand;
+use App\Console\FormCommand;
+use App\Console\GenerateMenuCommand;
+use App\Console\ImportCommand;
+use App\Console\InstallCommand;
+use App\Console\MakeCommand;
+use App\Console\MenuCommand;
+use App\Console\MinifyCommand;
+use App\Console\PermissionCommand;
+use App\Console\PublishCommand;
+use App\Console\ResetPasswordCommand;
+use App\Console\UninstallCommand;
+use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\Bootstrap;
+use App\Http\Middleware\LogOperation;
+use App\Http\Middleware\Permission;
+use App\Http\Middleware\Pjax;
+use App\Http\Middleware\Session;
+use Encore\Admin\Layout\Content;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+
+class AdminServiceProvider extends ServiceProvider
+{
+    /**
+     * @var array
+     */
+    protected $commands = [
+       AdminCommand::class,
+       MakeCommand::class,
+       ControllerCommand::class,
+       MenuCommand::class,
+       InstallCommand::class,
+       PublishCommand::class,
+       UninstallCommand::class,
+       ImportCommand::class,
+       CreateUserCommand::class,
+       ResetPasswordCommand::class,
+       ExtendCommand::class,
+       ExportSeedCommand::class,
+       MinifyCommand::class,
+       FormCommand::class,
+       PermissionCommand::class,
+       ActionCommand::class,
+       GenerateMenuCommand::class,
+       ConfigCommand::class,
+    ];
+
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'admin.auth'       => AdminAuthenticate::class,
+        'admin.pjax'       => Pjax::class,
+        'admin.log'        => LogOperation::class,
+        'admin.permission' => Permission::class,
+        'admin.bootstrap'  => Bootstrap::class,
+        'admin.session'    => Session::class,
+    ];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'admin' => [
+            'admin.auth',
+            'admin.pjax',
+            'admin.log',
+            'admin.bootstrap',
+            'admin.permission',
+            //            'admin.session',
+        ],
+    ];
+
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
+
+        $this->ensureHttps();
+
+        if (file_exists($routes = admin_path('routes.php'))) {
+            $this->loadRoutesFrom($routes);
+        }
+
+        $this->registerPublishing();
+
+        $this->compatibleBlade();
+
+        Blade::directive('box', function ($title) {
+            return "<?php \$box = new \Encore\Admin\Widgets\Box({$title}, '";
+        });
+
+        Blade::directive('endbox', function ($expression) {
+            return "'); echo \$box->render(); ?>";
+        });
+    }
+
+    /**
+     * Force to set https scheme if https enabled.
+     *
+     * @return void
+     */
+    protected function ensureHttps()
+    {
+        $is_admin = Str::startsWith(request()->getRequestUri(), '/'.ltrim(config('admin.route.prefix'), '/'));
+        if ((config('admin.https') || config('admin.secure')) && $is_admin) {
+            url()->forceScheme('https');
+            $this->app['request']->server->set('HTTPS', true);
+        }
+    }
+
+    /**
+     * Register the package's publishable resources.
+     *
+     * @return void
+     */
+    protected function registerPublishing()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([__DIR__.'/../config' => config_path()], 'laravel-admin-config');
+            if (version_compare($this->app->version(), '9.0.0', '>=')) {
+                $this->publishes([__DIR__.'/../resources/lang' => base_path('lang')], 'laravel-admin-lang');
+            } else {
+                $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang')], 'laravel-admin-lang');
+            }
+            $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')], 'laravel-admin-migrations');
+            $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-admin')], 'laravel-admin-assets');
+        }
+    }
+
+    /**
+     * Remove default feature of double encoding enable in laravel 5.6 or later.
+     *
+     * @return void
+     */
+    protected function compatibleBlade()
+    {
+        $reflectionClass = new \ReflectionClass('\Illuminate\View\Compilers\BladeCompiler');
+
+        if ($reflectionClass->hasMethod('withoutDoubleEncoding')) {
+            Blade::withoutDoubleEncoding();
+        }
+    }
+
+    /**
+     * Extends laravel router.
+     */
+    protected function macroRouter()
+    {
+        Router::macro('content', function ($uri, $content, $options = []) {
+            return $this->match(['GET', 'HEAD'], $uri, function (Content $layout) use ($content, $options) {
+                return $layout
+                    ->title(Arr::get($options, 'title', ' '))
+                    ->description(Arr::get($options, 'desc', ' '))
+                    ->body($content);
+            });
+        });
+
+        Router::macro('component', function ($uri, $component, $data = [], $options = []) {
+            return $this->match(['GET', 'HEAD'], $uri, function (Content $layout) use ($component, $data, $options) {
+                return $layout
+                    ->title(Arr::get($options, 'title', ' '))
+                    ->description(Arr::get($options, 'desc', ' '))
+                    ->component($component, $data);
+            });
+        });
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->loadAdminAuthConfig();
+
+        $this->registerRouteMiddleware();
+
+        $this->commands($this->commands);
+
+        $this->macroRouter();
+    }
+
+    /**
+     * Setup auth configuration.
+     *
+     * @return void
+     */
+    protected function loadAdminAuthConfig()
+    {
+        config(Arr::dot(config('admin.auth', []), 'auth.'));
+    }
+
+    /**
+     * Register the route middleware.
+     *
+     * @return void
+     */
+    protected function registerRouteMiddleware()
+    {
+        // register route middleware.
+        foreach ($this->routeMiddleware as $key => $middleware) {
+            app('router')->aliasMiddleware($key, $middleware);
+        }
+
+        // register middleware group.
+        foreach ($this->middlewareGroups as $key => $middleware) {
+            app('router')->middlewareGroup($key, $middleware);
+        }
+    }
+}

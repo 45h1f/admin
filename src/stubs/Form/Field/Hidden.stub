@@ -1,0 +1,9 @@
+<?php
+
+namespace App\Form\Field;
+
+use App\Form\Field;
+
+class Hidden extends Field
+{
+}

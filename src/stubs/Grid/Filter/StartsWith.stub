@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Grid\Filter;
+
+class StartsWith extends Like
+{
+    protected $exprFormat = '{value}%';
+}

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Services;
+namespace Admin\Services;
 
 use Closure;
-use App\Exception\Handler;
-use App\Form\Builder;
-use App\Form\Concerns\HandleCascadeFields;
-use App\Form\Concerns\HasFields;
-use App\Form\Concerns\HasHooks;
-use App\Form\Field;
-use App\Form\Layout\Layout;
-use App\Form\Row;
-use App\Form\Tab;
-use App\Traits\ShouldSnakeAttributes;
+use Admin\Exception\Handler;
+use Admin\Form\Builder;
+use Admin\Form\Concerns\HandleCascadeFields;
+use Admin\Form\Concerns\HasFields;
+use Admin\Form\Concerns\HasHooks;
+use Admin\Form\Field;
+use Admin\Form\Layout\Layout;
+use Admin\Form\Row;
+use Admin\Form\Tab;
+use Admin\Traits\ShouldSnakeAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
@@ -1421,7 +1421,7 @@ class Form implements Renderable
      *
      * @param Closure $callback
      *
-     * @return \App\Form\Footer
+     * @return \Admin\Form\Footer
      */
     public function footer(Closure $callback = null)
     {

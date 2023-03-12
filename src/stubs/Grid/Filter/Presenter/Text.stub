@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Filter\Presenter;
+namespace Admin\Grid\Filter\Presenter;
 
-use App\Admin;
+use Admin\Admin;
 
 class Text extends Presenter
 {

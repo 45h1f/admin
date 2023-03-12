@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Displayers;
+namespace Admin\Grid\Displayers;
 
-use App\Admin;
-use App\Grid\Simple;
+use Admin\Admin;
+use Admin\Grid\Simple;
 use Illuminate\Contracts\Support\Renderable;
 
 class Expand extends AbstractDisplayer

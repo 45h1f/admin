@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Tools;
+namespace Admin\Grid\Tools;
 
-use App\Grid;
+use Admin\Grid;
 use Illuminate\Support\Collection;
 
 class FixColumns

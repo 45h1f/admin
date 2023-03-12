@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Grid;
+namespace Admin\Grid;
 
-use App\Grid;
-use App\Grid\Selectable\Checkbox;
-use App\Grid\Selectable\Radio;
+use Admin\Grid;
+use Admin\Grid\Selectable\Checkbox;
+use Admin\Grid\Selectable\Radio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 

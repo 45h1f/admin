@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Grid\Exporters;
+namespace Admin\Grid\Exporters;
 
-use App\Grid;
+use Admin\Grid;
 
 abstract class AbstractExporter implements ExporterInterface
 {
     /**
-     * @var \App\Grid
+     * @var \Admin\Grid
      */
     protected $grid;
 

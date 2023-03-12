@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Admin\Http\Controllers;
 
-use App\Facades\Admin;
-use App\Form;
-use App\Layout\Content;
+use Admin\Facades\Admin;
+use Admin\Form;
+use Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;

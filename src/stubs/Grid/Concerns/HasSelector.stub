@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Concerns;
+namespace Admin\Grid\Concerns;
 
-use App\Grid;
-use App\Grid\Tools\Selector;
+use Admin\Grid;
+use Admin\Grid\Tools\Selector;
 
 /**
  * @mixin Grid

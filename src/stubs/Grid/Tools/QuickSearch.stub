@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Tools;
+namespace Admin\Grid\Tools;
 
-use App\Grid\Concerns\HasQuickSearch;
+use Admin\Grid\Concerns\HasQuickSearch;
 use Illuminate\Support\Arr;
 
 class QuickSearch extends AbstractTool

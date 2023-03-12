@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Filter;
+namespace Admin\Grid\Filter;
 
-use App\Admin;
+use Admin\Admin;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 

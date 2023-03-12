@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Actions;
+namespace Admin\Http\Actions;
 
-use App\Admin;
+use Admin\Admin;
 
 class Dialog extends Interactor
 {

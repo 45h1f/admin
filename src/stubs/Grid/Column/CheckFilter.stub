@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Column;
+namespace Admin\Grid\Column;
 
-use App\Admin;
-use App\Grid\Model;
+use Admin\Admin;
+use Admin\Grid\Model;
 
 class CheckFilter extends Filter
 {

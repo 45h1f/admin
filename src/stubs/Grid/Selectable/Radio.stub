@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Selectable;
+namespace Admin\Grid\Selectable;
 
-use App\Grid\Displayers\AbstractDisplayer;
+use Admin\Grid\Displayers\AbstractDisplayer;
 
 class Radio extends AbstractDisplayer
 {

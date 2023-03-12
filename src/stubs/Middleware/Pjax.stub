@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Admin\Http\Middleware;
 
 use Closure;
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Symfony\Component\DomCrawler\Crawler;

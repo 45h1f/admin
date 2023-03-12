@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Displayers;
+namespace Admin\Grid\Displayers;
 
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 
 /**
  * Class QRCode.

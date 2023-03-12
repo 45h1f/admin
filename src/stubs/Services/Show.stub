@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace Admin\Services;
 
-use App\Show\Divider;
-use App\Show\Field;
-use App\Show\Panel;
-use App\Show\Relation;
-use App\Traits\ShouldSnakeAttributes;
+use Admin\Show\Divider;
+use Admin\Show\Field;
+use Admin\Show\Panel;
+use Admin\Show\Relation;
+use Admin\Traits\ShouldSnakeAttributes;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

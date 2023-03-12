@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Actions;
+namespace Admin\Http\Actions;
 
 use Illuminate\Support\Arr;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Tools;
+namespace Admin\Grid\Tools;
 
-use App\Grid;
+use Admin\Grid;
 
 class CreateButton extends AbstractTool
 {

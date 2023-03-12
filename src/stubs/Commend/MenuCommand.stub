@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console;
+namespace Admin\Console;
 
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 use Illuminate\Console\Command;
 
 class MenuCommand extends Command

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Actions;
+namespace Admin\Http\Actions;
 
-use App\Grid\Column;
+use Admin\Grid\Column;
 use Illuminate\Http\Request;
 
 abstract class RowAction extends GridAction

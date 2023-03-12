@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Admin\Http\Controllers;
 
-use App\Layout\Content;
+use Admin\Layout\Content;
 use Illuminate\Routing\Controller;
 
 class AdminController extends Controller

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Exporters;
+namespace Admin\Grid\Exporters;
 
-use App\Grid\Column;
+use Admin\Grid\Column;
 
 class CsvExporter extends AbstractExporter
 {

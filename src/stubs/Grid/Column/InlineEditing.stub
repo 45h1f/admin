@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Column;
+namespace Admin\Grid\Column;
 
-use App\Grid\Displayers;
+use Admin\Grid\Displayers;
 
 trait InlineEditing
 {

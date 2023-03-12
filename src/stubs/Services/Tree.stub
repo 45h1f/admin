@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace Admin\Services;
 
 use Closure;
-use App\Tree\Tools;
+use Admin\Tree\Tools;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 

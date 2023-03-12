@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Concerns;
+namespace Admin\Grid\Concerns;
 
-use App\Grid\Tools\FixColumns;
+use Admin\Grid\Tools\FixColumns;
 use Illuminate\Support\Collection;
 
 trait CanFixColumns

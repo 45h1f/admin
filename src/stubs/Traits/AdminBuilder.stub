@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Traits;
+namespace Admin\Traits;
 
-use App\Form;
-use App\Grid;
-use App\Tree;
+use Admin\Form;
+use Admin\Grid;
+use Admin\Tree;
 
 /**
  * @deprecated

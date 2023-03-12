@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Filter\Presenter;
+namespace Admin\Grid\Filter\Presenter;
 
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 
 class Checkbox extends Radio
 {

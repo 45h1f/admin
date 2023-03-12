@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace Admin\Traits;
 
-use App\Tree;
+use Admin\Tree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace Admin\Services;
 
 use Closure;
-use App\Auth\Database\Menu;
-use App\Http\Controllers\AuthController;
-use App\Layout\Content;
-use App\Traits\HasAssets;
-use App\Widgets\Navbar;
+use Admin\Auth\Database\Menu;
+use Admin\Http\Controllers\AuthController;
+use Admin\Layout\Content;
+use Admin\Traits\HasAssets;
+use Admin\Widgets\Navbar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -223,7 +223,7 @@ class Admin
     /**
      * Get navbar object.
      *
-     * @return \App\Widgets\Navbar
+     * @return \Admin\Widgets\Navbar
      */
     public function getNavbar()
     {
@@ -261,7 +261,7 @@ class Admin
         app('router')->group($attributes, function ($router) {
 
             /* @var \Illuminate\Support\Facades\Route $router */
-            $router->namespace('\App\Controllers')->group(function ($router) {
+            $router->namespace('\Admin\Controllers')->group(function ($router) {
 
                 /* @var \Illuminate\Routing\Router $router */
                 $router->resource('auth/users', 'UserController')->names('admin.auth.users');

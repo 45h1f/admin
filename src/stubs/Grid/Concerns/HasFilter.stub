@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Concerns;
+namespace Admin\Grid\Concerns;
 
 use Closure;
-use App\Grid\Filter;
+use Admin\Grid\Filter;
 use Illuminate\Support\Collection;
 
 trait HasFilter
@@ -11,7 +11,7 @@ trait HasFilter
     /**
      * The grid Filter.
      *
-     * @var \App\Grid\Filter
+     * @var \Admin\Grid\Filter
      */
     protected $filter;
 

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\MessageBag;
+use Illuminate\Filesystem\Filesystem;
+
 
 if (!function_exists('admin_path')) {
 
@@ -325,5 +327,19 @@ if (!function_exists('admin_get_route')) {
     function admin_get_route(string $name): string
     {
         return config('admin.route.prefix').'.'.$name;
+    }
+}
+
+
+if (!function_exists('copy_dir')) {
+    function copy_dir(string $from, string $to): bool
+    {
+        try {
+            (new Filesystem)->ensureDirectoryExists($to);
+            (new Filesystem)->copyDirectory($from, $to);
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 }

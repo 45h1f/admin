@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Tools;
+namespace Admin\Grid\Tools;
 
-use App\Admin;
+use Admin\Admin;
 use Illuminate\Support\Collection;
 
 class BatchActions extends AbstractTool

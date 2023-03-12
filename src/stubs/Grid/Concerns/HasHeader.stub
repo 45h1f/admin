@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Concerns;
+namespace Admin\Grid\Concerns;
 
 use Closure;
-use App\Grid\Tools\Header;
+use Admin\Grid\Tools\Header;
 
 trait HasHeader
 {

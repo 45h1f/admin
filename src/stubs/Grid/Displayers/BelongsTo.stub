@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Grid\Displayers;
+namespace Admin\Grid\Displayers;
 
-use App\Admin;
-use App\Grid\Selectable;
+use Admin\Admin;
+use Admin\Grid\Selectable;
 
 class BelongsTo extends AbstractDisplayer
 {
@@ -38,7 +38,7 @@ class BelongsTo extends AbstractDisplayer
     {
         if (!class_exists($selectable) || !is_subclass_of($selectable, Selectable::class)) {
             throw new \InvalidArgumentException(
-                "[Class [{$selectable}] must be a sub class of App\Grid\Selectable"
+                "[Class [{$selectable}] must be a sub class of Admin\Grid\Selectable"
             );
         }
 

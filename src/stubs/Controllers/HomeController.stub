@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Admin\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Controllers\Dashboard;
-use App\Layout\Column;
-use App\Layout\Content;
-use App\Layout\Row;
+use Admin\Http\Controllers\Controller;
+use Admin\Controllers\Dashboard;
+use Admin\Layout\Column;
+use Admin\Layout\Content;
+use Admin\Layout\Row;
 
 class HomeController extends Controller
 {

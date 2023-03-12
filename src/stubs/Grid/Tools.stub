@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Grid;
+namespace Admin\Grid;
 
-use App\Actions\GridAction;
-use App\Grid;
-use App\Grid\Tools\AbstractTool;
-use App\Grid\Tools\BatchActions;
-use App\Grid\Tools\FilterButton;
+use Admin\Actions\GridAction;
+use Admin\Grid;
+use Admin\Grid\Tools\AbstractTool;
+use Admin\Grid\Tools\BatchActions;
+use Admin\Grid\Tools\FilterButton;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;

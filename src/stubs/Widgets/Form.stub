@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Widgets;
+namespace Admin\Widgets;
 
 use Closure;
-use App\Facades\Admin;
-use App\Form as BaseForm;
-use App\Form\Field;
-use App\Layout\Content;
+use Admin\Facades\Admin;
+use Admin\Form as BaseForm;
+use Admin\Form\Field;
+use Admin\Layout\Content;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;

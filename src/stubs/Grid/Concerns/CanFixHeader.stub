@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Concerns;
+namespace Admin\Grid\Concerns;
 
-use App\Admin;
+use Admin\Admin;
 
 trait CanFixHeader
 {

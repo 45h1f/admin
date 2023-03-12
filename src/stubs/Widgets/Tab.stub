@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Widgets;
+namespace Admin\Widgets;
 
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 class Tab extends Widget implements Renderable

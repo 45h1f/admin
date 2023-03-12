@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Admin\Http\Middleware;
 
-use App\Auth\Database\OperationLog as OperationLogModel;
-use App\Facades\Admin;
+use Admin\Auth\Database\OperationLog as OperationLogModel;
+use Admin\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 

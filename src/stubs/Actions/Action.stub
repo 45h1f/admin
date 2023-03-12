@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Actions;
+namespace Admin\Http\Actions;
 
-use App\Admin;
-use App\Form\Field;
+use Admin\Admin;
+use Admin\Form\Field;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Grid\Actions;
+namespace Admin\Grid\Actions;
 
-use App\Actions\RowAction;
+use Admin\Actions\RowAction;
 
 class Show extends RowAction
 {

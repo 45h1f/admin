@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Closure;
-use Encore\Admin\Tree\Tools;
+use App\Tree\Tools;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 

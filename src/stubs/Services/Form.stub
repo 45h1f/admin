@@ -3,16 +3,16 @@
 namespace App\Services;
 
 use Closure;
-use Encore\Admin\Exception\Handler;
-use Encore\Admin\Form\Builder;
-use Encore\Admin\Form\Concerns\HandleCascadeFields;
-use Encore\Admin\Form\Concerns\HasFields;
-use Encore\Admin\Form\Concerns\HasHooks;
-use Encore\Admin\Form\Field;
-use Encore\Admin\Form\Layout\Layout;
-use Encore\Admin\Form\Row;
-use Encore\Admin\Form\Tab;
-use Encore\Admin\Traits\ShouldSnakeAttributes;
+use App\Exception\Handler;
+use App\Form\Builder;
+use App\Form\Concerns\HandleCascadeFields;
+use App\Form\Concerns\HasFields;
+use App\Form\Concerns\HasHooks;
+use App\Form\Field;
+use App\Form\Layout\Layout;
+use App\Form\Row;
+use App\Form\Tab;
+use App\Traits\ShouldSnakeAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
@@ -1421,7 +1421,7 @@ class Form implements Renderable
      *
      * @param Closure $callback
      *
-     * @return \Encore\Admin\Form\Footer
+     * @return \App\Form\Footer
      */
     public function footer(Closure $callback = null)
     {

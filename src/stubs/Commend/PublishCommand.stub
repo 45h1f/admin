@@ -28,7 +28,7 @@ class PublishCommand extends Command
     public function handle()
     {
         $force = $this->option('force');
-        $options = ['--provider' => 'Encore\Admin\AdminServiceProvider'];
+        $options = ['--provider' => 'App\AdminServiceProvider'];
         if ($force == true) {
             $options['--force'] = true;
         }

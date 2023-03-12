@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Encore\Admin\Auth\Permission as Checker;
-use Encore\Admin\Facades\Admin;
+use App\Auth\Permission as Checker;
+use App\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 

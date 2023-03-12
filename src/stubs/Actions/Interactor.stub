@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use Encore\Admin\Actions\Action;
+use App\Actions\Action;
 
 abstract class Interactor
 {

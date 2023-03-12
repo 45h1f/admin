@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Encore\Admin\Auth\Database\OperationLog as OperationLogModel;
-use Encore\Admin\Facades\Admin;
+use App\Auth\Database\OperationLog as OperationLogModel;
+use App\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 

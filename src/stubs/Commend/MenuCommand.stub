@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use Encore\Admin\Facades\Admin;
+use App\Facades\Admin;
 use Illuminate\Console\Command;
 
 class MenuCommand extends Command

@@ -1,10 +1,10 @@
 <?php
 
-namespace Encore\Admin\Traits;
+namespace App\Traits;
 
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
-use Encore\Admin\Tree;
+use App\Form;
+use App\Grid;
+use App\Tree;
 
 /**
  * @deprecated

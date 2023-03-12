@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use Encore\Admin\Admin;
+use App\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 

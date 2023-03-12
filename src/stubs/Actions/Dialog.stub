@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use Encore\Admin\Admin;
+use App\Admin;
 
 class Dialog extends Interactor
 {

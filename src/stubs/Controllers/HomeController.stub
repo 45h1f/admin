@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\Dashboard;
-use Encore\Admin\Layout\Column;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
+use App\Controllers\Dashboard;
+use App\Layout\Column;
+use App\Layout\Content;
+use App\Layout\Row;
 
 class HomeController extends Controller
 {

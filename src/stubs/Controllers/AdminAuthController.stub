@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Form;
-use Encore\Admin\Layout\Content;
+use App\Facades\Admin;
+use App\Form;
+use App\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AdminAuthController extends Controller
 {
     /**
      * @var string

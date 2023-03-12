@@ -2,7 +2,7 @@
 
 namespace App\Auth;
 
-use Encore\Admin\Facades\Admin;
+use App\Facades\Admin;
 use App\Http\Middleware\Pjax;
 
 class Permission

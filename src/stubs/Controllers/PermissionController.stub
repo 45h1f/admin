@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
-use Encore\Admin\Show;
+use App\Form;
+use App\Grid;
+use App\Show;
 use Illuminate\Support\Str;
 
 class PermissionController extends AdminController

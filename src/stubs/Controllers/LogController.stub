@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use Encore\Admin\Auth\Database\OperationLog;
-use Encore\Admin\Grid;
+use App\Auth\Database\OperationLog;
+use App\Grid;
 use Illuminate\Support\Arr;
 
 class LogController extends AdminController

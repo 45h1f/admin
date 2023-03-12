@@ -166,7 +166,7 @@ class  InstallCommand extends Command
 
     public function controllerCopy()
     {
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AuthController.stub', app_path('Http/Controllers/AuthController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminAuthController.stub', app_path('Http/Controllers/AdminAuthController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HomeController.stub', app_path('Http/Controllers/HomeController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ExampleController.stub', app_path('Http/Controllers/ExampleController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminController.stub', app_path('Http/Controllers/AdminController.php'));
@@ -506,14 +506,14 @@ class  InstallCommand extends Command
 
     public function traitCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(app_path('Trait'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/Authorizable.stub', app_path('Trait/Authorizable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/AdminBuilder.stub', app_path('Trait/AdminBuilder.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/DefaultDatetimeFormat.stub', app_path('Trait/DefaultDatetimeFormat.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/HasAssets.stub', app_path('Trait/HasAssets.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/ModelTree.stub', app_path('Trait/ModelTree.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/Resizable.stub', app_path('Trait/Resizable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Trait/ShouldSnakeAttributes.stub', app_path('Trait/ShouldSnakeAttributes.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Traits'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Authorizable.stub', app_path('Traits/Authorizable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/AdminBuilder.stub', app_path('Traits/AdminBuilder.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/DefaultDatetimeFormat.stub', app_path('Traits/DefaultDatetimeFormat.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/HasAssets.stub', app_path('Traits/HasAssets.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ModelTree.stub', app_path('Traits/ModelTree.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Resizable.stub', app_path('Traits/Resizable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ShouldSnakeAttributes.stub', app_path('Traits/ShouldSnakeAttributes.php'));
         $this->components->info('trait copied...');
     }
 

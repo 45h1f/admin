@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Encore\Admin\Layout\Content;
+use App\Layout\Content;
 use Illuminate\Routing\Controller;
 
 class AdminController extends Controller

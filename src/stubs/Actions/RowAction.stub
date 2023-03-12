@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use Encore\Admin\Grid\Column;
+use App\Grid\Column;
 use Illuminate\Http\Request;
 
 abstract class RowAction extends GridAction

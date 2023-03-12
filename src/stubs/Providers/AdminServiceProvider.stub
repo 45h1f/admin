@@ -26,7 +26,7 @@ use App\Http\Middleware\LogOperation;
 use App\Http\Middleware\Permission;
 use App\Http\Middleware\Pjax;
 use App\Http\Middleware\Session;
-use Encore\Admin\Layout\Content;
+use App\Layout\Content;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
@@ -98,7 +98,7 @@ class AdminServiceProvider extends ServiceProvider
     {
         include app_path('Helpers/admin.php');
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'admin');
+        $this->loadViewsFrom(resource_path('views/backend'), 'admin');
 
         $this->ensureHttps();
 
@@ -107,7 +107,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->compatibleBlade();
 
         Blade::directive('box', function ($title) {
-            return "<?php \$box = new \Encore\Admin\Widgets\Box({$title}, '";
+            return "<?php \$box = new \App\Widgets\Box({$title}, '";
         });
 
         Blade::directive('endbox', function ($expression) {

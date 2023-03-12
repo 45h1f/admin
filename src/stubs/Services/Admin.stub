@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use Closure;
-use Encore\Admin\Auth\Database\Menu;
-use Encore\Admin\Controllers\AuthController;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Traits\HasAssets;
-use Encore\Admin\Widgets\Navbar;
+use App\Auth\Database\Menu;
+use App\Http\Controllers\AuthController;
+use App\Layout\Content;
+use App\Traits\HasAssets;
+use App\Widgets\Navbar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -72,77 +72,34 @@ class Admin
         return sprintf('Laravel-admin <comment>version</comment> <info>%s</info>', self::VERSION);
     }
 
-    /**
-     * @param $model
-     * @param Closure $callable
-     *
-     * @return \Encore\Admin\Grid
-     *
-     * @deprecated since v1.6.1
-     */
+
     public function grid($model, Closure $callable)
     {
         return new Grid($this->getModel($model), $callable);
     }
 
-    /**
-     * @param $model
-     * @param Closure $callable
-     *
-     * @return \Encore\Admin\Form
-     *
-     *  @deprecated since v1.6.1
-     */
+
     public function form($model, Closure $callable)
     {
         return new Form($this->getModel($model), $callable);
     }
 
-    /**
-     * Build a tree.
-     *
-     * @param $model
-     * @param Closure|null $callable
-     *
-     * @return \Encore\Admin\Tree
-     */
+
     public function tree($model, Closure $callable = null)
     {
         return new Tree($this->getModel($model), $callable);
     }
 
-    /**
-     * Build show page.
-     *
-     * @param $model
-     * @param mixed $callable
-     *
-     * @return Show
-     *
-     * @deprecated since v1.6.1
-     */
     public function show($model, $callable = null)
     {
         return new Show($this->getModel($model), $callable);
     }
 
-    /**
-     * @param Closure $callable
-     *
-     * @return \Encore\Admin\Layout\Content
-     *
-     * @deprecated since v1.6.1
-     */
     public function content(Closure $callable = null)
     {
         return new Content($callable);
     }
 
-    /**
-     * @param $model
-     *
-     * @return mixed
-     */
     public function getModel($model)
     {
         if ($model instanceof Model) {
@@ -156,11 +113,6 @@ class Admin
         throw new InvalidArgumentException("$model is not a valid model");
     }
 
-    /**
-     * Left sider-bar menu.
-     *
-     * @return array
-     */
     public function menu()
     {
         if (!empty($this->menu)) {
@@ -175,11 +127,6 @@ class Admin
         return $this->menu = $menuModel->toTree();
     }
 
-    /**
-     * @param array $menu
-     *
-     * @return array
-     */
     public function menuLinks($menu = [])
     {
         if (empty($menu)) {
@@ -276,7 +223,7 @@ class Admin
     /**
      * Get navbar object.
      *
-     * @return \Encore\Admin\Widgets\Navbar
+     * @return \App\Widgets\Navbar
      */
     public function getNavbar()
     {
@@ -304,7 +251,7 @@ class Admin
      *
      * @return void
      */
-    public function routes()
+    public static function routes()
     {
         $attributes = [
             'prefix'     => config('admin.route.prefix'),
@@ -314,7 +261,7 @@ class Admin
         app('router')->group($attributes, function ($router) {
 
             /* @var \Illuminate\Support\Facades\Route $router */
-            $router->namespace('\Encore\Admin\Controllers')->group(function ($router) {
+            $router->namespace('\App\Controllers')->group(function ($router) {
 
                 /* @var \Illuminate\Routing\Router $router */
                 $router->resource('auth/users', 'UserController')->names('admin.auth.users');
@@ -376,7 +323,7 @@ class Admin
     {
         $this->fireBootingCallbacks();
 
-        require config('admin.bootstrap', admin_path('bootstrap.php'));
+        require app_path('../bootstrap/admin.php');
 
         $this->addAdminAssets();
 

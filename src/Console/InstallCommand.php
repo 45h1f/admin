@@ -48,7 +48,9 @@ class  InstallCommand extends Command
             $this->showCopy();
             $this->traitCopy();
             $this->treeCopy();
-//            $this->widgetCopy();
+            $this->widgetCopy();
+            $this->copyHelper();
+            $this->copyService();
 
 
             $this->components->info('Admin installed successfully.');
@@ -517,6 +519,46 @@ class  InstallCommand extends Command
 
     public function widgetCopy()
     {
+        (new Filesystem)->ensureDirectoryExists(app_path('Widgets'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Alert.stub', app_path('Widgets/Alert.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Box.stub', app_path('Widgets/Box.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Callout.stub', app_path('Widgets/Callout.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Carousel.stub', app_path('Widgets/Carousel.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Collapse.stub', app_path('Widgets/Collapse.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/ContainsForms.stub', app_path('Widgets/ContainsForms.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Form.stub', app_path('Widgets/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/InfoBox.stub', app_path('Widgets/InfoBox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/MultipleSteps.stub', app_path('Widgets/MultipleSteps.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar.stub', app_path('Widgets/Navbar.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/StepForm.stub', app_path('Widgets/StepForm.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Tab.stub', app_path('Widgets/Tab.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Table.stub', app_path('Widgets/Table.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Widget.stub', app_path('Widgets/Widget.php'));
+
+        (new Filesystem)->ensureDirectoryExists(app_path('Widgets/Navbar'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/Fullscreen.stub', app_path('Widgets/Navbar/Fullscreen.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/RefreshButton.stub', app_path('Widgets/Navbar/RefreshButton.php'));
+
+
         $this->components->info('widget copied...');
+    }
+
+    public function copyHelper()
+    {
+        (new Filesystem)->ensureDirectoryExists(app_path('Helpers'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Helpers/admin.stub', app_path('Helpers/admin.php'));
+        $this->components->info('helper copied...');
+    }
+
+    public function copyService()
+    {
+        (new Filesystem)->ensureDirectoryExists(app_path('Services'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Admin.stub', app_path('Services/Admin.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Extension.stub', app_path('Services/Extension.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Form.stub', app_path('Services/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Grid.stub', app_path('Services/Grid.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Show.stub', app_path('Services/Show.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Tree.stub', app_path('Services/Tree.php'));
+        $this->components->info('service copied...');
     }
 }

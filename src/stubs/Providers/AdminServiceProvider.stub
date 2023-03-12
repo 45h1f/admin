@@ -96,15 +96,13 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
+        include app_path('Helpers/admin.php');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'admin');
 
         $this->ensureHttps();
 
-        if (file_exists($routes = admin_path('routes.php'))) {
-            $this->loadRoutesFrom($routes);
-        }
-
-        $this->registerPublishing();
+        $this->loadRoutesFrom(base_path('routes/admin.php'));
 
         $this->compatibleBlade();
 
@@ -128,25 +126,6 @@ class AdminServiceProvider extends ServiceProvider
         if ((config('admin.https') || config('admin.secure')) && $is_admin) {
             url()->forceScheme('https');
             $this->app['request']->server->set('HTTPS', true);
-        }
-    }
-
-    /**
-     * Register the package's publishable resources.
-     *
-     * @return void
-     */
-    protected function registerPublishing()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__.'/../config' => config_path()], 'laravel-admin-config');
-            if (version_compare($this->app->version(), '9.0.0', '>=')) {
-                $this->publishes([__DIR__.'/../resources/lang' => base_path('lang')], 'laravel-admin-lang');
-            } else {
-                $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang')], 'laravel-admin-lang');
-            }
-            $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')], 'laravel-admin-migrations');
-            $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-admin')], 'laravel-admin-assets');
         }
     }
 

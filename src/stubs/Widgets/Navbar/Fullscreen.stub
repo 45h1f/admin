@@ -1,8 +1,8 @@
 <?php
 
-namespace Encore\Admin\Widgets\Navbar;
+namespace App\Widgets\Navbar;
 
-use Encore\Admin\Admin;
+use App\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 /**

@@ -2,11 +2,10 @@
 
 namespace Admin\Http\Controllers;
 
-use Admin\Http\Controllers\Controller;
-use Admin\Controllers\Dashboard;
 use Admin\Layout\Column;
 use Admin\Layout\Content;
 use Admin\Layout\Row;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {

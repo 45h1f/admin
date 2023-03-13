@@ -98,11 +98,12 @@ class AdminServiceProvider extends ServiceProvider
     {
         include base_path('Admin/Helpers/admin.php');
 
-        $this->loadViewsFrom(base_path('Admin/resources/views/backend'), 'admin');
+        $this->loadViewsFrom(base_path('Admin/resources/views'), 'admin');
 
         $this->ensureHttps();
 
         $this->loadRoutesFrom(base_path('Admin/routes/web.php'));
+
 
         $this->compatibleBlade();
 

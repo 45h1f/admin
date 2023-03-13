@@ -4,7 +4,7 @@ namespace Admin\Services;
 
 use Closure;
 use Admin\Auth\Database\Menu;
-use Admin\Http\Controllers\AuthController;
+use Admin\Http\Controllers\AdminAuthController;
 use Admin\Layout\Content;
 use Admin\Traits\HasAssets;
 use Admin\Widgets\Navbar;
@@ -276,7 +276,7 @@ class Admin
                 $router->get('_handle_renderable_', 'HandleController@handleRenderable')->name('admin.handle-renderable');
             });
 
-            $authController = config('admin.auth.controller', AuthController::class);
+            $authController = config('admin.auth.controller', AdminAuthController::class);
 
             /* @var \Illuminate\Routing\Router $router */
             $router->get('auth/login', $authController.'@getLogin')->name('admin.login');

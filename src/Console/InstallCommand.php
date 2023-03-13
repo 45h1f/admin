@@ -31,6 +31,7 @@ class  InstallCommand extends Command
         $ans = $this->components->ask('You want to install admin panel. It Will be replace files. [y/n]', 'y');
         if (strtolower($ans) != 'n') {
             $this->components->info('Starting Installation.');
+            $this->copyConfig();
             $this->copyHelper();
             $this->langCopy();
             $this->viewCopy();
@@ -83,6 +84,11 @@ class  InstallCommand extends Command
         $this->components->info('add in provider...');
     }
 
+    public function copyConfig()
+    {
+        (new Filesystem)->copy(__DIR__ . '/../../config/admin.php',base_path('config/admin.php'));
+        $this->components->info('config copied...');
+    }
     public function copyHelper()
     {
         $helper_path = $this->dir . '/Helpers';

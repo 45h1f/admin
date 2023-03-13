@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Field;
+namespace Admin\Form\Field;
 
-use App\Form\NestedForm;
-use App\Widgets\Form as WidgetForm;
+use Admin\Form\NestedForm;
+use Admin\Widgets\Form as WidgetForm;
 
 class Table extends HasMany
 {

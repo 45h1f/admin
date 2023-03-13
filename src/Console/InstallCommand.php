@@ -4,6 +4,7 @@ namespace Ashiful\Admin\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use function PHPUnit\Framework\fileExists;
 
 class  InstallCommand extends Command
 {
@@ -31,7 +32,6 @@ class  InstallCommand extends Command
         if (strtolower($ans) != 'n') {
             $this->components->info('Starting Installation.');
             $this->copyHelper();
-            $this->providerCopy();
             $this->langCopy();
             $this->viewCopy();
             $this->assetCopy();
@@ -54,7 +54,7 @@ class  InstallCommand extends Command
             $this->traitCopy();
             $this->widgetCopy();
             $this->copyService();
-
+            $this->providerCopy();
             $this->components->info('Admin installed successfully.');
         } else {
             $this->components->info('Canceled Installation');
@@ -64,11 +64,12 @@ class  InstallCommand extends Command
 
     public function providerCopy()
     {
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Providers/AdminServiceProvider.stub', base_path('App/Providers/AdminServiceProvider.php'));
+        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Providers'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Providers/AdminServiceProvider.stub', base_path('Admin/Providers/AdminServiceProvider.php'));
         $this->components->info('provider copied...');
 
         $config_file = config_path('app.php');
-        $addAdminProvider = '\App\Providers\AdminServiceProvider::class,';
+        $addAdminProvider = '\Admin\Providers\AdminServiceProvider::class,';
         $config_content = file_get_contents($config_file);
         $keyPosition = strpos($config_content, "{$addAdminProvider}");
         if (!$keyPosition) {
@@ -101,19 +102,19 @@ class  InstallCommand extends Command
 
     public function langCopy()
     {
-        copy_dir(__DIR__ . '/../../resources/lang', base_path('Admin/resources/lang'));
+        $this->copy_dir(__DIR__ . '/../../resources/lang', base_path('Admin/resources/lang'));
         $this->components->info('lang copied...');
     }
 
     public function viewCopy()
     {
-        copy_dir(__DIR__ . '/../../resources/views', base_path('Admin/resources/views'));
+        $this->copy_dir(__DIR__ . '/../../resources/views', base_path('Admin/resources/views'));
         $this->components->info('views copied...');
     }
 
     public function migrationCopy()
     {
-        copy_dir(__DIR__ . '/../../migrations', base_path('Admin/database/migrations'));
+        $this->copy_dir(__DIR__ . '/../../migrations', base_path('Admin/database/migrations'));
         $this->components->info('migrations copied...');
     }
 
@@ -562,5 +563,16 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Show.stub', base_path('Admin/Services/Show.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Tree.stub', base_path('Admin/Services/Tree.php'));
         $this->components->info('service copied...');
+    }
+
+    public function copy_dir(string $from, string $to): bool
+    {
+        try {
+            (new Filesystem)->ensureDirectoryExists($to);
+            (new Filesystem)->copyDirectory($from, $to);
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 }

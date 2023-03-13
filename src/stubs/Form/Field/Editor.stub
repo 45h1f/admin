@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Field;
+namespace Admin\Form\Field;
 
-use App\Form\Field;
+use Admin\Form\Field;
 
 class Editor extends Field
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace Admin\Form;
 
-use App\Facades\Admin;
+use Admin\Facades\Admin;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;

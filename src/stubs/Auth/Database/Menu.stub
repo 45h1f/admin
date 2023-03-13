@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Auth\Database;
+namespace Admin\Auth\Database;
 
-use App\Traits\DefaultDatetimeFormat;
-use App\Traits\ModelTree;
+use Admin\Traits\DefaultDatetimeFormat;
+use Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Field;
+namespace Admin\Form\Field;
 
-use App\Admin;
-use App\Grid\Selectable;
+use Admin\Admin;
+use Admin\Grid\Selectable;
 
 trait BelongsToRelation
 {

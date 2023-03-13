@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Form\Field;
+namespace Admin\Form\Field;
 
-use App\Form\EmbeddedForm;
-use App\Form\Field;
-use App\Widgets\Form as WidgetForm;
+use Admin\Form\EmbeddedForm;
+use Admin\Form\Field;
+use Admin\Widgets\Form as WidgetForm;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 

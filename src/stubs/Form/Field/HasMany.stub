@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Form\Field;
+namespace Admin\Form\Field;
 
-use App\Admin;
-use App\Form;
-use App\Form\Field;
-use App\Form\NestedForm;
-use App\Widgets\Form as WidgetForm;
+use Admin\Admin;
+use Admin\Form;
+use Admin\Form\Field;
+use Admin\Form\NestedForm;
+use Admin\Widgets\Form as WidgetForm;
 use Illuminate\Database\Eloquent\Relations\HasMany as Relation;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;

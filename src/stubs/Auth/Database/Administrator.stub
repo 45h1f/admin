@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Auth\Database;
+namespace Admin\Auth\Database;
 
-use App\Traits\DefaultDatetimeFormat;
+use Admin\Traits\DefaultDatetimeFormat;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;

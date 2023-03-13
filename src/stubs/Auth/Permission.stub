@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Auth;
+namespace Admin\Auth;
 
-use App\Facades\Admin;
-use App\Http\Middleware\Pjax;
+use Admin\Facades\Admin;
+use Admin\Http\Middleware\Pjax;
 
 class Permission
 {

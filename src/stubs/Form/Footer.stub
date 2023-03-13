@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace Admin\Form;
 
-use App\Admin;
+use Admin\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 class Footer implements Renderable

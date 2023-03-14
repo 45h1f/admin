@@ -3,9 +3,9 @@
  * Copyright (c) 2019. Mallto.Co.Ltd.<mall-to.com> All rights reserved.
  */
 
-namespace Admin\Form\Layout;
+namespace App\Form\Layout;
 
-use Admin\Form\Field;
+use App\Form\Field;
 use Illuminate\Support\Collection;
 
 class Column

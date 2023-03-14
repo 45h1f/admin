@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Form;
+namespace App\Form;
 
-use Admin\Form;
+use App\Form;
 use Illuminate\Support\Collection;
 
 class Tab

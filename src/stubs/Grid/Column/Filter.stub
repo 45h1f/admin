@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Column;
+namespace App\Grid\Column;
 
-use Admin\Grid\Column;
-use Admin\Grid\Model;
+use App\Grid\Column;
+use App\Grid\Model;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 

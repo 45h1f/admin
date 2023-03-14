@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Console;
+namespace App\Console;
 
-use Admin\Auth\Database\Menu;
+use App\Auth\Database\Menu;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;

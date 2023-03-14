@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Http\Actions;
+namespace App\Http\Actions;
 
-use Admin\Actions\Action;
+use App\Actions\Action;
 
 abstract class Interactor
 {

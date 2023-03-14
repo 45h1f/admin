@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Actions;
+namespace App\Grid\Actions;
 
-use Admin\Actions\RowAction;
+use App\Actions\RowAction;
 
 class Edit extends RowAction
 {

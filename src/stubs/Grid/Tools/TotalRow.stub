@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Tools;
+namespace App\Grid\Tools;
 
-use Admin\Grid\Column;
+use App\Grid\Column;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Admin\Form;
-use Admin\Layout\Column;
-use Admin\Layout\Content;
-use Admin\Layout\Row;
-use Admin\Tree;
-use Admin\Widgets\Box;
+use App\Form;
+use App\Layout\Column;
+use App\Layout\Content;
+use App\Layout\Row;
+use App\Tree;
+use App\Widgets\Box;
 use Illuminate\Routing\Controller;
 
 class MenuController extends Controller
@@ -30,7 +30,7 @@ class MenuController extends Controller
                 $row->column(6, $this->treeView()->render());
 
                 $row->column(6, function (Column $column) {
-                    $form = new \Admin\Widgets\Form();
+                    $form = new \App\Widgets\Form();
                     $form->action(admin_url('auth/menu'));
 
                     $menuModel = config('admin.database.menu_model');
@@ -65,7 +65,7 @@ class MenuController extends Controller
     }
 
     /**
-     * @return \Admin\Tree
+     * @return \App\Tree
      */
     protected function treeView()
     {

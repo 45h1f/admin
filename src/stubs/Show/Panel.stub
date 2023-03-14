@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Show;
+namespace App\Show;
 
-use Admin\Show;
+use App\Show;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 

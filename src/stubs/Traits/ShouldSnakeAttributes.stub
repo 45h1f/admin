@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Traits;
+namespace App\Traits;
 
-use Admin\Grid\Model as GridModel;
+use App\Grid\Model as GridModel;
 
 trait ShouldSnakeAttributes
 {

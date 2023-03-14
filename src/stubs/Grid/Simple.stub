@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid;
+namespace App\Grid;
 
-use Admin\Grid;
+use App\Grid;
 use Illuminate\Contracts\Support\Renderable;
 
 /**

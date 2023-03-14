@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Show;
+namespace App\Show;
 
-use Admin\Grid;
-use Admin\Show;
+use App\Grid;
+use App\Show;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

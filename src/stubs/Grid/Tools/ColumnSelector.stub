@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Tools;
+namespace App\Grid\Tools;
 
-use Admin\Admin;
-use Admin\Grid;
+use App\Admin;
+use App\Grid;
 use Illuminate\Support\Collection;
 
 class ColumnSelector extends AbstractTool

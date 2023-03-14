@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Concerns;
+namespace App\Grid\Concerns;
 
 use Closure;
-use Admin\Grid\Tools\TotalRow;
+use App\Grid\Tools\TotalRow;
 
 trait HasTotalRow
 {

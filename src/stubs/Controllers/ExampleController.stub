@@ -1,11 +1,11 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Admin\Controllers\AdminController;
-use Admin\Form;
-use Admin\Grid;
-use Admin\Show;
+use App\Controllers\AdminController;
+use App\Form;
+use App\Grid;
+use App\Show;
 
 class ExampleController extends AdminController
 {

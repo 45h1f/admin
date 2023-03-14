@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Admin;
-use Admin\Form\Field;
+use App\Admin;
+use App\Form\Field;
 use Illuminate\Support\Arr;
 
 class KeyValue extends Field

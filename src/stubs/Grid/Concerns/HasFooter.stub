@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Concerns;
+namespace App\Grid\Concerns;
 
 use Closure;
-use Admin\Grid\Tools\Footer;
+use App\Grid\Tools\Footer;
 
 trait HasFooter
 {

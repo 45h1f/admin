@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Form;
+use App\Form;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;

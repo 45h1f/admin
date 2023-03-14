@@ -1,11 +1,11 @@
 <?php
 
-namespace Admin\Form;
+namespace App\Form;
 
 use Closure;
-use Admin\Admin;
-use Admin\Form;
-use Admin\Widgets\Form as WidgetForm;
+use App\Admin;
+use App\Form;
+use App\Widgets\Form as WidgetForm;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;

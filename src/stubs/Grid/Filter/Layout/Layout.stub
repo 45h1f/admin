@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Filter\Layout;
+namespace App\Grid\Filter\Layout;
 
-use Admin\Grid\Filter;
+use App\Grid\Filter;
 use Illuminate\Support\Collection;
 
 class Layout

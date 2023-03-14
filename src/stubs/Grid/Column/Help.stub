@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Grid\Column;
+namespace App\Grid\Column;
 
 use Illuminate\Contracts\Support\Renderable;
 

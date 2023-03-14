@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Show;
+namespace App\Show;
 
-use Admin\Show;
-use Admin\Widgets\Carousel;
+use App\Show;
+use App\Widgets\Carousel;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;

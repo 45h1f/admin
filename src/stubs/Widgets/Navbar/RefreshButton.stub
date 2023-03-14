@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Widgets\Navbar;
+namespace App\Widgets\Navbar;
 
-use Admin\Admin;
+use App\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 class RefreshButton implements Renderable

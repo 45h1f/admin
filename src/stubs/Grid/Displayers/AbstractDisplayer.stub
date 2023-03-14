@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Grid;
-use Admin\Grid\Column;
+use App\Grid;
+use App\Grid\Column;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractDisplayer

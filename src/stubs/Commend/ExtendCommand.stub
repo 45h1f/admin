@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Console;
+namespace App\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

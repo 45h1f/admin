@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Console;
+namespace App\Console;
 
-use Admin\Admin;
-use Admin\Facades\Admin as AdminFacade;
+use App\Admin;
+use App\Facades\Admin as AdminFacade;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use MatthiasMullie\Minify;

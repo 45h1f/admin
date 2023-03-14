@@ -1,10 +1,14 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Admin\Form;
-use Admin\Grid;
-use Admin\Show;
+
+use App\Grid\Displayers\Actions;
+use App\Grid\Tools;
+use App\Grid\Tools\BatchActions;
+use App\Services\Form;
+use App\Services\Grid;
+use App\Services\Show;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends AdminController
@@ -35,14 +39,14 @@ class UserController extends AdminController
         $grid->column('created_at', trans('admin.created_at'));
         $grid->column('updated_at', trans('admin.updated_at'));
 
-        $grid->actions(function (Grid\Displayers\Actions $actions) {
+        $grid->actions(function (Actions $actions) {
             if ($actions->getKey() == 1) {
                 $actions->disableDelete();
             }
         });
 
-        $grid->tools(function (Grid\Tools $tools) {
-            $tools->batch(function (Grid\Tools\BatchActions $actions) {
+        $grid->tools(function (Tools $tools) {
+            $tools->batch(function (BatchActions $actions) {
                 $actions->disableDelete();
             });
         });

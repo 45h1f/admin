@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Widgets;
+namespace App\Widgets;
 
-use Admin\Widgets\Navbar\RefreshButton;
+use App\Widgets\Navbar\RefreshButton;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 

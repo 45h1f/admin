@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid;
+namespace App\Grid;
 
-use Admin\Grid;
-use Admin\Grid\Exporters\CsvExporter;
+use App\Grid;
+use App\Grid\Exporters\CsvExporter;
 
 class Exporter
 {

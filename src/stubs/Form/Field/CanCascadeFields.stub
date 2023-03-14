@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Admin;
-use Admin\Form;
+use App\Admin;
+use App\Form;
 use Illuminate\Support\Arr;
 
 /**

@@ -1,15 +1,15 @@
 <?php
 
-namespace Admin\Grid\Filter;
+namespace App\Grid\Filter;
 
-use Admin\Grid\Filter;
-use Admin\Grid\Filter\Presenter\Checkbox;
-use Admin\Grid\Filter\Presenter\DateTime;
-use Admin\Grid\Filter\Presenter\MultipleSelect;
-use Admin\Grid\Filter\Presenter\Presenter;
-use Admin\Grid\Filter\Presenter\Radio;
-use Admin\Grid\Filter\Presenter\Select;
-use Admin\Grid\Filter\Presenter\Text;
+use App\Grid\Filter;
+use App\Grid\Filter\Presenter\Checkbox;
+use App\Grid\Filter\Presenter\DateTime;
+use App\Grid\Filter\Presenter\MultipleSelect;
+use App\Grid\Filter\Presenter\Presenter;
+use App\Grid\Filter\Presenter\Radio;
+use App\Grid\Filter\Presenter\Select;
+use App\Grid\Filter\Presenter\Text;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 

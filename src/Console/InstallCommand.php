@@ -4,6 +4,7 @@ namespace Ashiful\Admin\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use function PHPUnit\Framework\fileExists;
 
 class  InstallCommand extends Command
@@ -17,32 +18,29 @@ class  InstallCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->dir = base_path('Admin');
-        (new Filesystem)->ensureDirectoryExists($this->dir);
     }
 
     public function handle()
     {
-        $this->installAdminRelegatedFiles();
+        $this->installAdminFiles();
     }
 
-    protected function installAdminRelegatedFiles()
+    protected function installAdminFiles()
     {
         $ans = $this->components->ask('You want to install admin panel. It Will be replace files. [y/n]', 'y');
         if (strtolower($ans) != 'n') {
             $this->components->info('Starting Installation.');
             $this->copyConfig();
             $this->copyHelper();
+            $this->assetCopy();
             $this->langCopy();
             $this->viewCopy();
-            $this->assetCopy();
             $this->migrationCopy();
             $this->commendCopy();
             $this->middlewareCopy();
             $this->routeCopy();
             $this->bootstrapCopy();
             $this->controllerCopy();
-
             $this->actionCopy();
             $this->exceptionCopy();
             $this->authCopy();
@@ -65,12 +63,11 @@ class  InstallCommand extends Command
 
     public function providerCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Providers'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Providers/AdminServiceProvider.stub', base_path('Admin/Providers/AdminServiceProvider.php'));
+        $this->copy_file(__DIR__ . '/../stubs/Providers/AdminServiceProvider.stub', base_path('App/Providers/AdminServiceProvider.php'), app_path('Providers'));
         $this->components->info('provider copied...');
 
         $config_file = config_path('app.php');
-        $addAdminProvider = '\Admin\Providers\AdminServiceProvider::class,';
+        $addAdminProvider = '\App\Providers\AdminServiceProvider::class,';
         $config_content = file_get_contents($config_file);
         $keyPosition = strpos($config_content, "{$addAdminProvider}");
         if (!$keyPosition) {
@@ -86,153 +83,146 @@ class  InstallCommand extends Command
 
     public function copyConfig()
     {
-        (new Filesystem)->copy(__DIR__ . '/../../config/admin.php',base_path('config/admin.php'));
+        $this->copy_file(__DIR__ . '/../../config/admin.php', base_path('config/admin.php'), base_path('config'));
         $this->components->info('config copied...');
     }
+
     public function copyHelper()
     {
-        $helper_path = $this->dir . '/Helpers';
-        (new Filesystem)->ensureDirectoryExists($helper_path);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Helpers/admin.stub', $helper_path . '/admin.php');
+        $this->copy_file(__DIR__ . '/../stubs/Helpers/admin.stub', app_path('Helpers/admin.php'), app_path('Helpers'));
         $this->components->info('helper copied...');
     }
 
     public function assetCopy()
     {
-
-        $asset_path = public_path('admin/assets');
-        (new Filesystem)->ensureDirectoryExists($asset_path);
-        (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/assets', $asset_path);
+        $this->copy_dir(__DIR__ . '/../../resources/assets', public_path('admin/assets'));
         $this->components->info('assets copied...');
     }
 
     public function langCopy()
     {
-        $this->copy_dir(__DIR__ . '/../../resources/lang', base_path('Admin/resources/lang'));
+        $this->copy_dir(__DIR__ . '/../../resources/lang', app()->langPath());
         $this->components->info('lang copied...');
     }
 
     public function viewCopy()
     {
-        $this->copy_dir(__DIR__ . '/../../resources/views', base_path('Admin/resources/views'));
+        $this->copy_dir(__DIR__ . '/../../resources/views', app()->viewPath('admin'));
         $this->components->info('views copied...');
     }
 
     public function migrationCopy()
     {
-        $this->copy_dir(__DIR__ . '/../../migrations', base_path('Admin/database/migrations'));
+        $this->copy_dir(__DIR__ . '/../../migrations', base_path('database/migrations'));
         $this->components->info('migrations copied...');
     }
 
     public function commendCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Console'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ActionCommand.stub', base_path('Admin/Console/ActionCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/AdminCommand.stub', base_path('Admin/Console/AdminCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ConfigCommand.stub', base_path('Admin/Console/ConfigCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ControllerCommand.stub', base_path('Admin/Console/ControllerCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/CreateUserCommand.stub', base_path('Admin/Console/CreateUserCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExportSeedCommand.stub', base_path('Admin/Console/ExportSeedCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExtendCommand.stub', base_path('Admin/Console/ExtendCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/FormCommand.stub', base_path('Admin/Console/FormCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/GenerateMenuCommand.stub', base_path('Admin/Console/GenerateMenuCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ImportCommand.stub', base_path('Admin/Console/ImportCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/InstallCommand.stub', base_path('Admin/Console/InstallCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MakeCommand.stub', base_path('Admin/Console/MakeCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MenuCommand.stub', base_path('Admin/Console/MenuCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MinifyCommand.stub', base_path('Admin/Console/MinifyCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PermissionCommand.stub', base_path('Admin/Console/PermissionCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PublishCommand.stub', base_path('Admin/Console/PublishCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResetPasswordCommand.stub', base_path('Admin/Console/ResetPasswordCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResourceGenerator.stub', base_path('Admin/Console/ResourceGenerator.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/UninstallCommand.stub', base_path('Admin/Console/UninstallCommand.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Console'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ActionCommand.stub', app_path('Console/ActionCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/AdminCommand.stub', app_path('Console/AdminCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ConfigCommand.stub', app_path('Console/ConfigCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ControllerCommand.stub', app_path('Console/ControllerCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/CreateUserCommand.stub', app_path('Console/CreateUserCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExportSeedCommand.stub', app_path('Console/ExportSeedCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExtendCommand.stub', app_path('Console/ExtendCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/FormCommand.stub', app_path('Console/FormCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/GenerateMenuCommand.stub', app_path('Console/GenerateMenuCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ImportCommand.stub', app_path('Console/ImportCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/InstallCommand.stub', app_path('Console/InstallCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MakeCommand.stub', app_path('Console/MakeCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MenuCommand.stub', app_path('Console/MenuCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MinifyCommand.stub', app_path('Console/MinifyCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PermissionCommand.stub', app_path('Console/PermissionCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PublishCommand.stub', app_path('Console/PublishCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResetPasswordCommand.stub', app_path('Console/ResetPasswordCommand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResourceGenerator.stub', app_path('Console/ResourceGenerator.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/UninstallCommand.stub', app_path('Console/UninstallCommand.php'));
         $this->components->info('commend copied...');
     }
 
     public function middlewareCopy()
     {
-        $middleware = base_path('Admin/Http/Middleware');
+        $middleware = app_path('Http/Middleware');
         (new Filesystem)->ensureDirectoryExists($middleware);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/AdminAuthenticate.stub', base_path('Admin/Http/Middleware/AdminAuthenticate.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Bootstrap.stub', base_path('Admin/Http/Middleware/Bootstrap.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/LogOperation.stub', base_path('Admin/Http/Middleware/LogOperation.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Permission.stub', base_path('Admin/Http/Middleware/Permission.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Pjax.stub', base_path('Admin/Http/Middleware/Pjax.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Session.stub', base_path('Admin/Http/Middleware/Session.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/AdminAuthenticate.stub', app_path('Http/Middleware/AdminAuthenticate.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Bootstrap.stub', app_path('Http/Middleware/Bootstrap.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/LogOperation.stub', app_path('Http/Middleware/LogOperation.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Permission.stub', app_path('Http/Middleware/Permission.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Pjax.stub', app_path('Http/Middleware/Pjax.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Middleware/Session.stub', app_path('Http/Middleware/Session.php'));
         $this->components->info('middleware copied...');
     }
 
     public function routeCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/routes'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/routes/web.stub', base_path('Admin/routes/web.php'));
+        (new Filesystem)->ensureDirectoryExists(base_path('routes'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/routes/web.stub', base_path('routes/admin.php'));
         $this->components->info('route copied...');
     }
 
     public function bootstrapCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/bootstrap'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/bootstrap/admin_bootstrap.stub', base_path('Admin/bootstrap/app.php'));
+        $this->copy_file(__DIR__ . '/../stubs/bootstrap/admin_bootstrap.stub', base_path('bootstrap/admin_app.php'), base_path('bootstrap'));
         $this->components->info('bootstrap copied...');
     }
 
     public function controllerCopy()
     {
-        $controllerPath = base_path('Admin/Http/Controllers');
+        $controllerPath = app_path('Http/Controllers');
         (new Filesystem)->ensureDirectoryExists($controllerPath);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminAuthController.stub', base_path('Admin/Http/Controllers/AdminAuthController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HomeController.stub', base_path('Admin/Http/Controllers/HomeController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ExampleController.stub', base_path('Admin/Http/Controllers/ExampleController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminController.stub', base_path('Admin/Http/Controllers/AdminController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/Dashboard.stub', base_path('Admin/Http/Controllers/Dashboard.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HandleController.stub', base_path('Admin/Http/Controllers/HandleController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HasResourceActions.stub', base_path('Admin/Http/Controllers/HasResourceActions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/LogController.stub', base_path('Admin/Http/Controllers/LogController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/MenuController.stub', base_path('Admin/Http/Controllers/MenuController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ModelForm.stub', base_path('Admin/Http/Controllers/ModelForm.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/PermissionController.stub', base_path('Admin/Http/Controllers/PermissionController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/RoleController.stub', base_path('Admin/Http/Controllers/RoleController.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/UserController.stub', base_path('Admin/Http/Controllers/UserController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminAuthController.stub', app_path('Http/Controllers/AdminAuthController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HomeController.stub', app_path('Http/Controllers/HomeController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ExampleController.stub', app_path('Http/Controllers/ExampleController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminController.stub', app_path('Http/Controllers/AdminController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/Dashboard.stub', app_path('Http/Controllers/Dashboard.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HandleController.stub', app_path('Http/Controllers/HandleController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HasResourceActions.stub', app_path('Http/Controllers/HasResourceActions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/LogController.stub', app_path('Http/Controllers/LogController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/MenuController.stub', app_path('Http/Controllers/MenuController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ModelForm.stub', app_path('Http/Controllers/ModelForm.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/PermissionController.stub', app_path('Http/Controllers/PermissionController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/RoleController.stub', app_path('Http/Controllers/RoleController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/UserController.stub', app_path('Http/Controllers/UserController.php'));
     }
 
     public function actionCopy()
     {
-        $actionPath = base_path('Admin/Http/Actions');
+        $actionPath = app_path('Http/Actions');
         (new Filesystem)->ensureDirectoryExists($actionPath);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Action.stub', base_path('Admin/Http/Actions/Action.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/BatchAction.stub', base_path('Admin/Http/Actions/BatchAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Dialog.stub', base_path('Admin/Http/Actions/Dialog.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Form.stub', base_path('Admin/Http/Actions/Form.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/GridAction.stub', base_path('Admin/Http/Actions/GridAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Interactor.stub', base_path('Admin/Http/Actions/Interactor.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Response.stub', base_path('Admin/Http/Actions/Response.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/RowAction.stub', base_path('Admin/Http/Actions/RowAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/SweatAlert2.stub', base_path('Admin/Http/Actions/SweatAlert2.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Toastr.stub', base_path('Admin/Http/Actions/Toastr.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Action.stub', app_path('Http/Actions/Action.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/BatchAction.stub', app_path('Http/Actions/BatchAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Dialog.stub', app_path('Http/Actions/Dialog.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Form.stub', app_path('Http/Actions/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/GridAction.stub', app_path('Http/Actions/GridAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Interactor.stub', app_path('Http/Actions/Interactor.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Response.stub', app_path('Http/Actions/Response.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/RowAction.stub', app_path('Http/Actions/RowAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/SweatAlert2.stub', app_path('Http/Actions/SweatAlert2.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Toastr.stub', app_path('Http/Actions/Toastr.php'));
 
         $this->components->info('action copied...');
     }
 
     public function exceptionCopy()
     {
-        $exceptionPath = base_path('Admin/Exceptions');
-        (new Filesystem)->ensureDirectoryExists($exceptionPath);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Exceptions/AdminHandler.stub', base_path('Admin/Exceptions/AdminHandler.php'));
+        $this->copy_file(__DIR__ . '/../stubs/Exceptions/AdminHandler.stub', app_path('Exceptions/AdminHandler.php'), app_path('Exceptions'));
         $this->components->info('exception copied...');
     }
 
     public function authCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Auth'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Permission.stub', base_path('Admin/Auth/Permission.php'));
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Auth/Database'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Administrator.stub', base_path('Admin/Auth/Database/Administrator.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/AdminTablesSeeder.stub', base_path('Admin/Auth/Database/AdminTablesSeeder.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/HasPermissions.stub', base_path('Admin/Auth/Database/HasPermissions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Menu.stub', base_path('Admin/Auth/Database/Menu.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/OperationLog.stub', base_path('Admin/Auth/Database/OperationLog.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Permission.stub', base_path('Admin/Auth/Database/Permission.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Role.stub', base_path('Admin/Auth/Database/Role.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Auth'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Permission.stub', app_path('Auth/Permission.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Auth/Database'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Administrator.stub', app_path('Auth/Database/Administrator.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/AdminTablesSeeder.stub', app_path('Auth/Database/AdminTablesSeeder.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/HasPermissions.stub', app_path('Auth/Database/HasPermissions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Menu.stub', app_path('Auth/Database/Menu.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/OperationLog.stub', app_path('Auth/Database/OperationLog.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Permission.stub', app_path('Auth/Database/Permission.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Role.stub', app_path('Auth/Database/Role.php'));
 
 
         $this->components->info('auth copied...');
@@ -240,319 +230,318 @@ class  InstallCommand extends Command
 
     public function facadeCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Facades'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Facades/Admin.stub', base_path('Admin/Facades/Admin.php'));
+        $this->copy_file(__DIR__ . '/../stubs/Facades/Admin.stub', app_path('Facades/Admin.php'), app_path('Facades'));
         $this->components->info('facade copied...');
     }
 
     public function formCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Form'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Builder.stub', base_path('Admin/Form/Builder.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/EmbeddedForm.stub', base_path('Admin/Form/EmbeddedForm.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field.stub', base_path('Admin/Form/Field.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Footer.stub', base_path('Admin/Form/Footer.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/NestedForm.stub', base_path('Admin/Form/NestedForm.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Row.stub', base_path('Admin/Form/Row.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Tab.stub', base_path('Admin/Form/Tab.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Tools.stub', base_path('Admin/Form/Tools.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Form'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Builder.stub', app_path('Form/Builder.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/EmbeddedForm.stub', app_path('Form/EmbeddedForm.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field.stub', app_path('Form/Field.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Footer.stub', app_path('Form/Footer.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/NestedForm.stub', app_path('Form/NestedForm.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Row.stub', app_path('Form/Row.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Tab.stub', app_path('Form/Tab.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Tools.stub', app_path('Form/Tools.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Form/Concerns'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HandleCascadeFields.stub', base_path('Admin/Form/Concerns/HandleCascadeFields.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HasFields.stub', base_path('Admin/Form/Concerns/HasFields.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HasHooks.stub', base_path('Admin/Form/Concerns/HasHooks.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Form/Concerns'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HandleCascadeFields.stub', app_path('Form/Concerns/HandleCascadeFields.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HasFields.stub', app_path('Form/Concerns/HasFields.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Concerns/HasHooks.stub', app_path('Form/Concerns/HasHooks.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Form/Field'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsTo.stub', base_path('Admin/Form/Field/BelongsTo.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsToMany.stub', base_path('Admin/Form/Field/BelongsToMany.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsToRelation.stub', base_path('Admin/Form/Field/BelongsToRelation.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Button.stub', base_path('Admin/Form/Field/Button.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CanCascadeFields.stub', base_path('Admin/Form/Field/CanCascadeFields.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Captcha.stub', base_path('Admin/Form/Field/Captcha.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CascadeGroup.stub', base_path('Admin/Form/Field/CascadeGroup.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Checkbox.stub', base_path('Admin/Form/Field/Checkbox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CheckboxButton.stub', base_path('Admin/Form/Field/CheckboxButton.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CheckboxCard.stub', base_path('Admin/Form/Field/CheckboxCard.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Color.stub', base_path('Admin/Form/Field/Color.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Currency.stub', base_path('Admin/Form/Field/Currency.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Date.stub', base_path('Admin/Form/Field/Date.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DateMultiple.stub', base_path('Admin/Form/Field/DateMultiple.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DateRange.stub', base_path('Admin/Form/Field/DateRange.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Datetime.stub', base_path('Admin/Form/Field/Datetime.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DatetimeRange.stub', base_path('Admin/Form/Field/DatetimeRange.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Decimal.stub', base_path('Admin/Form/Field/Decimal.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Display.stub', base_path('Admin/Form/Field/Display.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Divider.stub', base_path('Admin/Form/Field/Divider.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Editor.stub', base_path('Admin/Form/Field/Editor.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Email.stub', base_path('Admin/Form/Field/Email.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Embeds.stub', base_path('Admin/Form/Field/Embeds.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Fieldset.stub', base_path('Admin/Form/Field/Fieldset.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/File.stub', base_path('Admin/Form/Field/File.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/HasMany.stub', base_path('Admin/Form/Field/HasMany.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/HasValuePicker.stub', base_path('Admin/Form/Field/HasValuePicker.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Hidden.stub', base_path('Admin/Form/Field/Hidden.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Html.stub', base_path('Admin/Form/Field/Html.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Icon.stub', base_path('Admin/Form/Field/Icon.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Id.stub', base_path('Admin/Form/Field/Id.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Image.stub', base_path('Admin/Form/Field/Image.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ImageField.stub', base_path('Admin/Form/Field/ImageField.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Ip.stub', base_path('Admin/Form/Field/Ip.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/KeyValue.stub', base_path('Admin/Form/Field/KeyValue.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Listbox.stub', base_path('Admin/Form/Field/Listbox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ListField.stub', base_path('Admin/Form/Field/ListField.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Map.stub', base_path('Admin/Form/Field/Map.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Mobile.stub', base_path('Admin/Form/Field/Mobile.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Month.stub', base_path('Admin/Form/Field/Month.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleFile.stub', base_path('Admin/Form/Field/MultipleFile.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleImage.stub', base_path('Admin/Form/Field/MultipleImage.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleSelect.stub', base_path('Admin/Form/Field/MultipleSelect.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Nullable.stub', base_path('Admin/Form/Field/Nullable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Number.stub', base_path('Admin/Form/Field/Number.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Password.stub', base_path('Admin/Form/Field/Password.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/PlainInput.stub', base_path('Admin/Form/Field/PlainInput.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Radio.stub', base_path('Admin/Form/Field/Radio.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/RadioButton.stub', base_path('Admin/Form/Field/RadioButton.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/RadioCard.stub', base_path('Admin/Form/Field/RadioCard.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Rate.stub', base_path('Admin/Form/Field/Rate.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Select.stub', base_path('Admin/Form/Field/Select.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Slider.stub', base_path('Admin/Form/Field/Slider.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/SwitchField.stub', base_path('Admin/Form/Field/SwitchField.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Table.stub', base_path('Admin/Form/Field/Table.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Tags.stub', base_path('Admin/Form/Field/Tags.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Text.stub', base_path('Admin/Form/Field/Text.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Textarea.stub', base_path('Admin/Form/Field/Textarea.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Time.stub', base_path('Admin/Form/Field/Time.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/TimeRange.stub', base_path('Admin/Form/Field/TimeRange.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Timezone.stub', base_path('Admin/Form/Field/Timezone.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/UploadField.stub', base_path('Admin/Form/Field/UploadField.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Url.stub', base_path('Admin/Form/Field/Url.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ValuePicker.stub', base_path('Admin/Form/Field/ValuePicker.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Year.stub', base_path('Admin/Form/Field/Year.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Form/Field'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsTo.stub', app_path('Form/Field/BelongsTo.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsToMany.stub', app_path('Form/Field/BelongsToMany.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/BelongsToRelation.stub', app_path('Form/Field/BelongsToRelation.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Button.stub', app_path('Form/Field/Button.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CanCascadeFields.stub', app_path('Form/Field/CanCascadeFields.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Captcha.stub', app_path('Form/Field/Captcha.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CascadeGroup.stub', app_path('Form/Field/CascadeGroup.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Checkbox.stub', app_path('Form/Field/Checkbox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CheckboxButton.stub', app_path('Form/Field/CheckboxButton.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/CheckboxCard.stub', app_path('Form/Field/CheckboxCard.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Color.stub', app_path('Form/Field/Color.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Currency.stub', app_path('Form/Field/Currency.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Date.stub', app_path('Form/Field/Date.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DateMultiple.stub', app_path('Form/Field/DateMultiple.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DateRange.stub', app_path('Form/Field/DateRange.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Datetime.stub', app_path('Form/Field/Datetime.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/DatetimeRange.stub', app_path('Form/Field/DatetimeRange.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Decimal.stub', app_path('Form/Field/Decimal.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Display.stub', app_path('Form/Field/Display.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Divider.stub', app_path('Form/Field/Divider.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Editor.stub', app_path('Form/Field/Editor.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Email.stub', app_path('Form/Field/Email.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Embeds.stub', app_path('Form/Field/Embeds.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Fieldset.stub', app_path('Form/Field/Fieldset.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/File.stub', app_path('Form/Field/File.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/HasMany.stub', app_path('Form/Field/HasMany.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/HasValuePicker.stub', app_path('Form/Field/HasValuePicker.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Hidden.stub', app_path('Form/Field/Hidden.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Html.stub', app_path('Form/Field/Html.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Icon.stub', app_path('Form/Field/Icon.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Id.stub', app_path('Form/Field/Id.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Image.stub', app_path('Form/Field/Image.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ImageField.stub', app_path('Form/Field/ImageField.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Ip.stub', app_path('Form/Field/Ip.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/KeyValue.stub', app_path('Form/Field/KeyValue.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Listbox.stub', app_path('Form/Field/Listbox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ListField.stub', app_path('Form/Field/ListField.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Map.stub', app_path('Form/Field/Map.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Mobile.stub', app_path('Form/Field/Mobile.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Month.stub', app_path('Form/Field/Month.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleFile.stub', app_path('Form/Field/MultipleFile.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleImage.stub', app_path('Form/Field/MultipleImage.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/MultipleSelect.stub', app_path('Form/Field/MultipleSelect.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Nullable.stub', app_path('Form/Field/Nullable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Number.stub', app_path('Form/Field/Number.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Password.stub', app_path('Form/Field/Password.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/PlainInput.stub', app_path('Form/Field/PlainInput.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Radio.stub', app_path('Form/Field/Radio.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/RadioButton.stub', app_path('Form/Field/RadioButton.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/RadioCard.stub', app_path('Form/Field/RadioCard.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Rate.stub', app_path('Form/Field/Rate.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Select.stub', app_path('Form/Field/Select.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Slider.stub', app_path('Form/Field/Slider.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/SwitchField.stub', app_path('Form/Field/SwitchField.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Table.stub', app_path('Form/Field/Table.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Tags.stub', app_path('Form/Field/Tags.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Text.stub', app_path('Form/Field/Text.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Textarea.stub', app_path('Form/Field/Textarea.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Time.stub', app_path('Form/Field/Time.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/TimeRange.stub', app_path('Form/Field/TimeRange.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Timezone.stub', app_path('Form/Field/Timezone.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/UploadField.stub', app_path('Form/Field/UploadField.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Url.stub', app_path('Form/Field/Url.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/ValuePicker.stub', app_path('Form/Field/ValuePicker.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Field/Year.stub', app_path('Form/Field/Year.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Form/Layout'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Layout/Column.stub', base_path('Admin/Form/Layout/Column.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Layout/Layout.stub', base_path('Admin/Form/Layout/Layout.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Form/Layout'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Layout/Column.stub', app_path('Form/Layout/Column.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form/Layout/Layout.stub', app_path('Form/Layout/Layout.php'));
 
         $this->components->info('form copied...');
     }
 
     public function gridCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column.stub', base_path('Admin/Grid/Column.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporter.stub', base_path('Admin/Grid/Exporter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter.stub', base_path('Admin/Grid/Filter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Model.stub', base_path('Admin/Grid/Model.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Row.stub', base_path('Admin/Grid/Row.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable.stub', base_path('Admin/Grid/Selectable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Simple.stub', base_path('Admin/Grid/Simple.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools.stub', base_path('Admin/Grid/Tools.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column.stub', app_path('Grid/Column.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporter.stub', app_path('Grid/Exporter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter.stub', app_path('Grid/Filter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Model.stub', app_path('Grid/Model.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Row.stub', app_path('Grid/Row.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable.stub', app_path('Grid/Selectable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Simple.stub', app_path('Grid/Simple.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools.stub', app_path('Grid/Tools.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Actions'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Delete.stub', base_path('Admin/Grid/Actions/Delete.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Edit.stub', base_path('Admin/Grid/Actions/Edit.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Show.stub', base_path('Admin/Grid/Actions/Show.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Actions'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Delete.stub', app_path('Grid/Actions/Delete.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Edit.stub', app_path('Grid/Actions/Edit.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Actions/Show.stub', app_path('Grid/Actions/Show.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Column'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/CheckFilter.stub', base_path('Admin/Grid/Column/CheckFilter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/ExtendDisplay.stub', base_path('Admin/Grid/Column/ExtendDisplay.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Filter.stub', base_path('Admin/Grid/Column/Filter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/HasHeader.stub', base_path('Admin/Grid/Column/HasHeader.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Help.stub', base_path('Admin/Grid/Column/Help.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/InlineEditing.stub', base_path('Admin/Grid/Column/InlineEditing.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/InputFilter.stub', base_path('Admin/Grid/Column/InputFilter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/RangeFilter.stub', base_path('Admin/Grid/Column/RangeFilter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Sorter.stub', base_path('Admin/Grid/Column/Sorter.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Column'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/CheckFilter.stub', app_path('Grid/Column/CheckFilter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/ExtendDisplay.stub', app_path('Grid/Column/ExtendDisplay.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Filter.stub', app_path('Grid/Column/Filter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/HasHeader.stub', app_path('Grid/Column/HasHeader.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Help.stub', app_path('Grid/Column/Help.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/InlineEditing.stub', app_path('Grid/Column/InlineEditing.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/InputFilter.stub', app_path('Grid/Column/InputFilter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/RangeFilter.stub', app_path('Grid/Column/RangeFilter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Column/Sorter.stub', app_path('Grid/Column/Sorter.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Concerns'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanDoubleClick.stub', base_path('Admin/Grid/Concerns/CanDoubleClick.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanExportGrid.stub', base_path('Admin/Grid/Concerns/CanExportGrid.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanFixColumns.stub', base_path('Admin/Grid/Concerns/CanFixColumns.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanHidesColumns.stub', base_path('Admin/Grid/Concerns/CanHidesColumns.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasActions.stub', base_path('Admin/Grid/Concerns/HasActions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasElementNames.stub', base_path('Admin/Grid/Concerns/HasElementNames.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasFilter.stub', base_path('Admin/Grid/Concerns/HasFilter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasFooter.stub', base_path('Admin/Grid/Concerns/HasFooter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHeader.stub', base_path('Admin/Grid/Concerns/HasHeader.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHotKeys.stub', base_path('Admin/Grid/Concerns/HasHotKeys.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHotKeys.stub', base_path('Admin/Grid/Concerns/HasHotKeys.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasQuickCreate.stub', base_path('Admin/Grid/Concerns/HasQuickCreate.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasQuickSearch.stub', base_path('Admin/Grid/Concerns/HasQuickSearch.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasSelector.stub', base_path('Admin/Grid/Concerns/HasSelector.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasTools.stub', base_path('Admin/Grid/Concerns/HasTools.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasTotalRow.stub', base_path('Admin/Grid/Concerns/HasTotalRow.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Concerns'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanDoubleClick.stub', app_path('Grid/Concerns/CanDoubleClick.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanExportGrid.stub', app_path('Grid/Concerns/CanExportGrid.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanFixColumns.stub', app_path('Grid/Concerns/CanFixColumns.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanHidesColumns.stub', app_path('Grid/Concerns/CanHidesColumns.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasActions.stub', app_path('Grid/Concerns/HasActions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasElementNames.stub', app_path('Grid/Concerns/HasElementNames.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasFilter.stub', app_path('Grid/Concerns/HasFilter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasFooter.stub', app_path('Grid/Concerns/HasFooter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHeader.stub', app_path('Grid/Concerns/HasHeader.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHotKeys.stub', app_path('Grid/Concerns/HasHotKeys.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasHotKeys.stub', app_path('Grid/Concerns/HasHotKeys.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasQuickCreate.stub', app_path('Grid/Concerns/HasQuickCreate.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasQuickSearch.stub', app_path('Grid/Concerns/HasQuickSearch.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasSelector.stub', app_path('Grid/Concerns/HasSelector.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasTools.stub', app_path('Grid/Concerns/HasTools.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasTotalRow.stub', app_path('Grid/Concerns/HasTotalRow.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Displayers'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/AbstractDisplayer.stub', base_path('Admin/Grid/Displayers/AbstractDisplayer.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Actions.stub', base_path('Admin/Grid/Displayers/Actions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Badge.stub', base_path('Admin/Grid/Displayers/Badge.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/BelongsTo.stub', base_path('Admin/Grid/Displayers/BelongsTo.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/BelongsToMany.stub', base_path('Admin/Grid/Displayers/BelongsToMany.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Button.stub', base_path('Admin/Grid/Displayers/Button.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Carousel.stub', base_path('Admin/Grid/Displayers/Carousel.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Checkbox.stub', base_path('Admin/Grid/Displayers/Checkbox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/ContextMenuActions.stub', base_path('Admin/Grid/Displayers/ContextMenuActions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Copyable.stub', base_path('Admin/Grid/Displayers/Copyable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Datetime.stub', base_path('Admin/Grid/Displayers/Datetime.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Downloadable.stub', base_path('Admin/Grid/Displayers/Downloadable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/DropdownActions.stub', base_path('Admin/Grid/Displayers/DropdownActions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Editable.stub', base_path('Admin/Grid/Displayers/Editable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Expand.stub', base_path('Admin/Grid/Displayers/Expand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Image.stub', base_path('Admin/Grid/Displayers/Image.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Input.stub', base_path('Admin/Grid/Displayers/Input.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Label.stub', base_path('Admin/Grid/Displayers/Label.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Limit.stub', base_path('Admin/Grid/Displayers/Limit.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Link.stub', base_path('Admin/Grid/Displayers/Link.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Modal.stub', base_path('Admin/Grid/Displayers/Modal.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/MultipleSelect.stub', base_path('Admin/Grid/Displayers/MultipleSelect.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Orderable.stub', base_path('Admin/Grid/Displayers/Orderable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Prefix.stub', base_path('Admin/Grid/Displayers/Prefix.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/ProgressBar.stub', base_path('Admin/Grid/Displayers/ProgressBar.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/QRCode.stub', base_path('Admin/Grid/Displayers/QRCode.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Radio.stub', base_path('Admin/Grid/Displayers/Radio.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/RowSelector.stub', base_path('Admin/Grid/Displayers/RowSelector.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Secret.stub', base_path('Admin/Grid/Displayers/Secret.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Select.stub', base_path('Admin/Grid/Displayers/Select.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Suffix.stub', base_path('Admin/Grid/Displayers/Suffix.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/SwitchDisplay.stub', base_path('Admin/Grid/Displayers/SwitchDisplay.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/SwitchGroup.stub', base_path('Admin/Grid/Displayers/SwitchGroup.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Table.stub', base_path('Admin/Grid/Displayers/Table.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Textarea.stub', base_path('Admin/Grid/Displayers/Textarea.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Upload.stub', base_path('Admin/Grid/Displayers/Upload.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Displayers'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/AbstractDisplayer.stub', app_path('Grid/Displayers/AbstractDisplayer.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Actions.stub', app_path('Grid/Displayers/Actions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Badge.stub', app_path('Grid/Displayers/Badge.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/BelongsTo.stub', app_path('Grid/Displayers/BelongsTo.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/BelongsToMany.stub', app_path('Grid/Displayers/BelongsToMany.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Button.stub', app_path('Grid/Displayers/Button.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Carousel.stub', app_path('Grid/Displayers/Carousel.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Checkbox.stub', app_path('Grid/Displayers/Checkbox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/ContextMenuActions.stub', app_path('Grid/Displayers/ContextMenuActions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Copyable.stub', app_path('Grid/Displayers/Copyable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Datetime.stub', app_path('Grid/Displayers/Datetime.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Downloadable.stub', app_path('Grid/Displayers/Downloadable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/DropdownActions.stub', app_path('Grid/Displayers/DropdownActions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Editable.stub', app_path('Grid/Displayers/Editable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Expand.stub', app_path('Grid/Displayers/Expand.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Image.stub', app_path('Grid/Displayers/Image.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Input.stub', app_path('Grid/Displayers/Input.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Label.stub', app_path('Grid/Displayers/Label.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Limit.stub', app_path('Grid/Displayers/Limit.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Link.stub', app_path('Grid/Displayers/Link.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Modal.stub', app_path('Grid/Displayers/Modal.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/MultipleSelect.stub', app_path('Grid/Displayers/MultipleSelect.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Orderable.stub', app_path('Grid/Displayers/Orderable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Prefix.stub', app_path('Grid/Displayers/Prefix.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/ProgressBar.stub', app_path('Grid/Displayers/ProgressBar.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/QRCode.stub', app_path('Grid/Displayers/QRCode.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Radio.stub', app_path('Grid/Displayers/Radio.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/RowSelector.stub', app_path('Grid/Displayers/RowSelector.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Secret.stub', app_path('Grid/Displayers/Secret.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Select.stub', app_path('Grid/Displayers/Select.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Suffix.stub', app_path('Grid/Displayers/Suffix.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/SwitchDisplay.stub', app_path('Grid/Displayers/SwitchDisplay.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/SwitchGroup.stub', app_path('Grid/Displayers/SwitchGroup.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Table.stub', app_path('Grid/Displayers/Table.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Textarea.stub', app_path('Grid/Displayers/Textarea.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Displayers/Upload.stub', app_path('Grid/Displayers/Upload.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Exporters'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/AbstractExporter.stub', base_path('Admin/Grid/Exporters/AbstractExporter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/CsvExporter.stub', base_path('Admin/Grid/Exporters/CsvExporter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/ExcelExporter.stub', base_path('Admin/Grid/Exporters/ExcelExporter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/ExporterInterface.stub', base_path('Admin/Grid/Exporters/ExporterInterface.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Exporters'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/AbstractExporter.stub', app_path('Grid/Exporters/AbstractExporter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/CsvExporter.stub', app_path('Grid/Exporters/CsvExporter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/ExcelExporter.stub', app_path('Grid/Exporters/ExcelExporter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Exporters/ExporterInterface.stub', app_path('Grid/Exporters/ExporterInterface.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Filter'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/AbstractFilter.stub', base_path('Admin/Grid/Filter/AbstractFilter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Between.stub', base_path('Admin/Grid/Filter/Between.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Date.stub', base_path('Admin/Grid/Filter/Date.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Day.stub', base_path('Admin/Grid/Filter/Day.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/EndsWith.stub', base_path('Admin/Grid/Filter/EndsWith.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Equal.stub', base_path('Admin/Grid/Filter/Equal.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Group.stub', base_path('Admin/Grid/Filter/Group.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Gt.stub', base_path('Admin/Grid/Filter/Gt.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Hidden.stub', base_path('Admin/Grid/Filter/Hidden.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Ilike.stub', base_path('Admin/Grid/Filter/Ilike.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/In.stub', base_path('Admin/Grid/Filter/In.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Like.stub', base_path('Admin/Grid/Filter/Like.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Lt.stub', base_path('Admin/Grid/Filter/Lt.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Month.stub', base_path('Admin/Grid/Filter/Month.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/NotEqual.stub', base_path('Admin/Grid/Filter/NotEqual.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/NotIn.stub', base_path('Admin/Grid/Filter/NotIn.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Scope.stub', base_path('Admin/Grid/Filter/Scope.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/StartsWith.stub', base_path('Admin/Grid/Filter/StartsWith.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Where.stub', base_path('Admin/Grid/Filter/Where.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Year.stub', base_path('Admin/Grid/Filter/Year.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Filter'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/AbstractFilter.stub', app_path('Grid/Filter/AbstractFilter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Between.stub', app_path('Grid/Filter/Between.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Date.stub', app_path('Grid/Filter/Date.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Day.stub', app_path('Grid/Filter/Day.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/EndsWith.stub', app_path('Grid/Filter/EndsWith.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Equal.stub', app_path('Grid/Filter/Equal.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Group.stub', app_path('Grid/Filter/Group.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Gt.stub', app_path('Grid/Filter/Gt.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Hidden.stub', app_path('Grid/Filter/Hidden.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Ilike.stub', app_path('Grid/Filter/Ilike.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/In.stub', app_path('Grid/Filter/In.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Like.stub', app_path('Grid/Filter/Like.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Lt.stub', app_path('Grid/Filter/Lt.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Month.stub', app_path('Grid/Filter/Month.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/NotEqual.stub', app_path('Grid/Filter/NotEqual.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/NotIn.stub', app_path('Grid/Filter/NotIn.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Scope.stub', app_path('Grid/Filter/Scope.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/StartsWith.stub', app_path('Grid/Filter/StartsWith.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Where.stub', app_path('Grid/Filter/Where.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Year.stub', app_path('Grid/Filter/Year.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Filter/Layout'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Layout/Column.stub', base_path('Admin/Grid/Filter/Layout/Column.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Layout/Layout.stub', base_path('Admin/Grid/Filter/Layout/Layout.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Filter/Layout'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Layout/Column.stub', app_path('Grid/Filter/Layout/Column.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Layout/Layout.stub', app_path('Grid/Filter/Layout/Layout.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Filter/Presenter'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Checkbox.stub', base_path('Admin/Grid/Filter/Presenter/Checkbox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/DateTime.stub', base_path('Admin/Grid/Filter/Presenter/DateTime.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/MultipleSelect.stub', base_path('Admin/Grid/Filter/Presenter/MultipleSelect.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Presenter.stub', base_path('Admin/Grid/Filter/Presenter/Presenter.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Radio.stub', base_path('Admin/Grid/Filter/Presenter/Radio.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Select.stub', base_path('Admin/Grid/Filter/Presenter/Select.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Text.stub', base_path('Admin/Grid/Filter/Presenter/Text.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Filter/Presenter'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Checkbox.stub', app_path('Grid/Filter/Presenter/Checkbox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/DateTime.stub', app_path('Grid/Filter/Presenter/DateTime.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/MultipleSelect.stub', app_path('Grid/Filter/Presenter/MultipleSelect.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Presenter.stub', app_path('Grid/Filter/Presenter/Presenter.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Radio.stub', app_path('Grid/Filter/Presenter/Radio.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Select.stub', app_path('Grid/Filter/Presenter/Select.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Filter/Presenter/Text.stub', app_path('Grid/Filter/Presenter/Text.php'));
 
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Selectable'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/BrowserBtn.stub', base_path('Admin/Grid/Selectable/BrowserBtn.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/Checkbox.stub', base_path('Admin/Grid/Selectable/Checkbox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/Radio.stub', base_path('Admin/Grid/Selectable/Radio.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Selectable'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/BrowserBtn.stub', app_path('Grid/Selectable/BrowserBtn.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/Checkbox.stub', app_path('Grid/Selectable/Checkbox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Selectable/Radio.stub', app_path('Grid/Selectable/Radio.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Grid/Tools'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/AbstractTool.stub', base_path('Admin/Grid/Tools/AbstractTool.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchAction.stub', base_path('Admin/Grid/Tools/BatchAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchActions.stub', base_path('Admin/Grid/Tools/BatchActions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchDelete.stub', base_path('Admin/Grid/Tools/BatchDelete.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/ColumnSelector.stub', base_path('Admin/Grid/Tools/ColumnSelector.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/CreateButton.stub', base_path('Admin/Grid/Tools/CreateButton.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/ExportButton.stub', base_path('Admin/Grid/Tools/ExportButton.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/FilterButton.stub', base_path('Admin/Grid/Tools/FilterButton.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/FixColumns.stub', base_path('Admin/Grid/Tools/FixColumns.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Footer.stub', base_path('Admin/Grid/Tools/Footer.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Header.stub', base_path('Admin/Grid/Tools/Header.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Paginator.stub', base_path('Admin/Grid/Tools/Paginator.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/PerPageSelector.stub', base_path('Admin/Grid/Tools/PerPageSelector.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/QuickCreate.stub', base_path('Admin/Grid/Tools/QuickCreate.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/QuickSearch.stub', base_path('Admin/Grid/Tools/QuickSearch.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Selector.stub', base_path('Admin/Grid/Tools/Selector.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/TotalRow.stub', base_path('Admin/Grid/Tools/TotalRow.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Grid/Tools'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/AbstractTool.stub', app_path('Grid/Tools/AbstractTool.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchAction.stub', app_path('Grid/Tools/BatchAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchActions.stub', app_path('Grid/Tools/BatchActions.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/BatchDelete.stub', app_path('Grid/Tools/BatchDelete.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/ColumnSelector.stub', app_path('Grid/Tools/ColumnSelector.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/CreateButton.stub', app_path('Grid/Tools/CreateButton.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/ExportButton.stub', app_path('Grid/Tools/ExportButton.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/FilterButton.stub', app_path('Grid/Tools/FilterButton.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/FixColumns.stub', app_path('Grid/Tools/FixColumns.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Footer.stub', app_path('Grid/Tools/Footer.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Header.stub', app_path('Grid/Tools/Header.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Paginator.stub', app_path('Grid/Tools/Paginator.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/PerPageSelector.stub', app_path('Grid/Tools/PerPageSelector.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/QuickCreate.stub', app_path('Grid/Tools/QuickCreate.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/QuickSearch.stub', app_path('Grid/Tools/QuickSearch.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/Selector.stub', app_path('Grid/Tools/Selector.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Tools/TotalRow.stub', app_path('Grid/Tools/TotalRow.php'));
 
         $this->components->info('grid copied...');
     }
 
     public function layoutCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Layout'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Buildable.stub', base_path('Admin/Layout/Buildable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Column.stub', base_path('Admin/Layout/Column.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Content.stub', base_path('Admin/Layout/Content.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Row.stub', base_path('Admin/Layout/Row.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Layout'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Buildable.stub', app_path('Layout/Buildable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Column.stub', app_path('Layout/Column.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Content.stub', app_path('Layout/Content.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Layout/Row.stub', app_path('Layout/Row.php'));
         $this->components->info('layout copied...');
     }
 
     public function showCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Show'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/AbstractField.stub', base_path('Admin/Show/AbstractField.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Divider.stub', base_path('Admin/Show/Divider.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Field.stub', base_path('Admin/Show/Field.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Panel.stub', base_path('Admin/Show/Panel.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Relation.stub', base_path('Admin/Show/Relation.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Tools.stub', base_path('Admin/Show/Tools.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Show'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/AbstractField.stub', app_path('Show/AbstractField.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Divider.stub', app_path('Show/Divider.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Field.stub', app_path('Show/Field.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Panel.stub', app_path('Show/Panel.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Relation.stub', app_path('Show/Relation.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show/Tools.stub', app_path('Show/Tools.php'));
 
         $this->components->info('show copied...');
     }
 
     public function treeCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Tree'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Tree/Tools.stub', base_path('Admin/Tree/Tools.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Tree'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Tree/Tools.stub', app_path('Tree/Tools.php'));
         $this->components->info('tree copied...');
     }
 
     public function traitCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Traits'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Authorizable.stub', base_path('Admin/Traits/Authorizable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/AdminBuilder.stub', base_path('Admin/Traits/AdminBuilder.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/DefaultDatetimeFormat.stub', base_path('Admin/Traits/DefaultDatetimeFormat.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/HasAssets.stub', base_path('Admin/Traits/HasAssets.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ModelTree.stub', base_path('Admin/Traits/ModelTree.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Resizable.stub', base_path('Admin/Traits/Resizable.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ShouldSnakeAttributes.stub', base_path('Admin/Traits/ShouldSnakeAttributes.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Traits'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Authorizable.stub', app_path('Traits/Authorizable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/AdminBuilder.stub', app_path('Traits/AdminBuilder.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/DefaultDatetimeFormat.stub', app_path('Traits/DefaultDatetimeFormat.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/HasAssets.stub', app_path('Traits/HasAssets.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ModelTree.stub', app_path('Traits/ModelTree.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Resizable.stub', app_path('Traits/Resizable.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ShouldSnakeAttributes.stub', app_path('Traits/ShouldSnakeAttributes.php'));
         $this->components->info('trait copied...');
     }
 
     public function widgetCopy()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Widgets'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Alert.stub', base_path('Admin/Widgets/Alert.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Box.stub', base_path('Admin/Widgets/Box.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Callout.stub', base_path('Admin/Widgets/Callout.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Carousel.stub', base_path('Admin/Widgets/Carousel.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Collapse.stub', base_path('Admin/Widgets/Collapse.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/ContainsForms.stub', base_path('Admin/Widgets/ContainsForms.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Form.stub', base_path('Admin/Widgets/Form.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/InfoBox.stub', base_path('Admin/Widgets/InfoBox.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/MultipleSteps.stub', base_path('Admin/Widgets/MultipleSteps.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar.stub', base_path('Admin/Widgets/Navbar.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/StepForm.stub', base_path('Admin/Widgets/StepForm.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Tab.stub', base_path('Admin/Widgets/Tab.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Table.stub', base_path('Admin/Widgets/Table.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Widget.stub', base_path('Admin/Widgets/Widget.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Widgets'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Alert.stub', app_path('Widgets/Alert.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Box.stub', app_path('Widgets/Box.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Callout.stub', app_path('Widgets/Callout.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Carousel.stub', app_path('Widgets/Carousel.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Collapse.stub', app_path('Widgets/Collapse.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/ContainsForms.stub', app_path('Widgets/ContainsForms.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Form.stub', app_path('Widgets/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/InfoBox.stub', app_path('Widgets/InfoBox.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/MultipleSteps.stub', app_path('Widgets/MultipleSteps.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar.stub', app_path('Widgets/Navbar.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/StepForm.stub', app_path('Widgets/StepForm.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Tab.stub', app_path('Widgets/Tab.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Table.stub', app_path('Widgets/Table.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Widget.stub', app_path('Widgets/Widget.php'));
 
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Widgets/Navbar'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/Fullscreen.stub', base_path('Admin/Widgets/Navbar/Fullscreen.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/RefreshButton.stub', base_path('Admin/Widgets/Navbar/RefreshButton.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Widgets/Navbar'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/Fullscreen.stub', app_path('Widgets/Navbar/Fullscreen.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Widgets/Navbar/RefreshButton.stub', app_path('Widgets/Navbar/RefreshButton.php'));
 
 
         $this->components->info('widget copied...');
@@ -561,13 +550,13 @@ class  InstallCommand extends Command
 
     public function copyService()
     {
-        (new Filesystem)->ensureDirectoryExists(base_path('Admin/Services'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Admin.stub', base_path('Admin/Services/Admin.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Extension.stub', base_path('Admin/Services/Extension.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Form.stub', base_path('Admin/Services/Form.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Grid.stub', base_path('Admin/Services/Grid.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Show.stub', base_path('Admin/Services/Show.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Tree.stub', base_path('Admin/Services/Tree.php'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Services'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Admin.stub', app_path('Services/Admin.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Extension.stub', app_path('Services/Extension.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Form.stub', app_path('Services/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Grid.stub', app_path('Services/Grid.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Show.stub', app_path('Services/Show.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Tree.stub', app_path('Services/Tree.php'));
         $this->components->info('service copied...');
     }
 
@@ -576,6 +565,17 @@ class  InstallCommand extends Command
         try {
             (new Filesystem)->ensureDirectoryExists($to);
             (new Filesystem)->copyDirectory($from, $to);
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    public function copy_file(string $from, string $to, string $folder): bool
+    {
+        try {
+            (new Filesystem)->ensureDirectoryExists($folder);
+            (new Filesystem)->copy($from, $to);
             return true;
         } catch (\Exception $exception) {
             return false;

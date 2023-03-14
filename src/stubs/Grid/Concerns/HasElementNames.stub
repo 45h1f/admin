@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Grid\Concerns;
+namespace App\Grid\Concerns;
 
 trait HasElementNames
 {

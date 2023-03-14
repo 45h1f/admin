@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Admin;
+use App\Admin;
 
 class BelongsToMany extends MultipleSelect
 {

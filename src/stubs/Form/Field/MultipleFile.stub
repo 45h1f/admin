@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Form;
-use Admin\Form\Field;
+use App\Form;
+use App\Form\Field;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

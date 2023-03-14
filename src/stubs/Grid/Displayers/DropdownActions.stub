@@ -1,12 +1,12 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Actions\RowAction;
-use Admin\Admin;
-use Admin\Grid\Actions\Delete;
-use Admin\Grid\Actions\Edit;
-use Admin\Grid\Actions\Show;
+use App\Actions\RowAction;
+use App\Admin;
+use App\Grid\Actions\Delete;
+use App\Grid\Actions\Edit;
+use App\Grid\Actions\Show;
 
 class DropdownActions extends Actions
 {

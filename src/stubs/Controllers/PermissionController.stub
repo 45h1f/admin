@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Admin\Form;
-use Admin\Grid;
-use Admin\Show;
+use App\Form;
+use App\Grid;
+use App\Show;
 use Illuminate\Support\Str;
 
 class PermissionController extends AdminController

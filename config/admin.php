@@ -1,8 +1,13 @@
 <?php
 
-/*
- * You can place your custom package configuration in here.
- */
+
+use App\Auth\Database\Administrator;
+use App\Auth\Database\Menu;
+use App\Auth\Database\Permission;
+use App\Auth\Database\Role;
+use App\Grid\Displayers\DropdownActions;
+use App\Http\Controllers\AdminAuthController;
+
 return [
 
     /*
@@ -53,7 +58,7 @@ return [
 
         'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),
 
-        'namespace' => 'App\\Admin\\Controllers',
+        'namespace' => 'App\\Http\\Controllers',
 
         'middleware' => ['web', 'admin'],
     ],
@@ -103,7 +108,7 @@ return [
     */
     'auth' => [
 
-        'controller' => Admin\Http\Controllers\AdminAuthController::class,
+        'controller' => AdminAuthController::class,
 
         'guard' => 'admin',
 
@@ -117,7 +122,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => Admin\Auth\Database\Administrator::class,
+                'model'  => Administrator::class,
             ],
         ],
 
@@ -170,19 +175,19 @@ return [
 
         // User tables and model.
         'users_table' => 'admin_users',
-        'users_model' => Admin\Auth\Database\Administrator::class,
+        'users_model' => Administrator::class,
 
         // Role table and model.
         'roles_table' => 'admin_roles',
-        'roles_model' => Admin\Auth\Database\Role::class,
+        'roles_model' => Role::class,
 
         // Permission table and model.
         'permissions_table' => 'admin_permissions',
-        'permissions_model' => Admin\Auth\Database\Permission::class,
+        'permissions_model' =>  Permission::class,
 
         // Menu table and model.
         'menu_table' => 'admin_menu',
-        'menu_model' => Admin\Auth\Database\Menu::class,
+        'menu_model' => Menu::class,
 
         // Pivot table for table above.
         'operation_log_table'    => 'admin_operation_log',
@@ -376,7 +381,7 @@ return [
     | The global Grid action display class.
     |--------------------------------------------------------------------------
     */
-    'grid_action_class' => \Encore\Admin\Grid\Displayers\DropdownActions::class,
+    'grid_action_class' => DropdownActions::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -386,7 +391,7 @@ return [
     | When you use command `php artisan admin:extend` to generate extensions,
     | the extension files will be generated in this directory.
     */
-    'extension_dir' => app_path('Admin/Extensions'),
+    'extension_dir' => app_path('extensions'),
 
     /*
     |--------------------------------------------------------------------------

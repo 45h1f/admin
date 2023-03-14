@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Concerns;
+namespace App\Grid\Concerns;
 
-use Admin\Grid;
-use Admin\Grid\Tools\ColumnSelector;
+use App\Grid;
+use App\Grid\Tools\ColumnSelector;
 use Illuminate\Support\Collection;
 
 trait CanHidesColumns

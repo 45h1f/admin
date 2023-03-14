@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Traits;
+namespace App\Traits;
 
 
-use Admin\Facades\Admin;
+use App\Facades\Admin;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 

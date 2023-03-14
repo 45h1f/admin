@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Grid;
+namespace App\Grid;
 
-use Admin\Grid\Filter\AbstractFilter;
-use Admin\Grid\Filter\Layout\Layout;
-use Admin\Grid\Filter\Scope;
+use App\Grid\Filter\AbstractFilter;
+use App\Grid\Filter\Layout\Layout;
+use App\Grid\Filter\Scope;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;

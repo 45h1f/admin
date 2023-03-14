@@ -1,11 +1,11 @@
 <?php
 
-namespace Admin\Grid\Column;
+namespace App\Grid\Column;
 
 use Carbon\Carbon;
-use Admin\Grid\Column;
-use Admin\Grid\Displayers;
-use Admin\Grid\Model;
+use App\Grid\Column;
+use App\Grid\Displayers;
+use App\Grid\Model;
 use Illuminate\Support\Arr;
 
 /**

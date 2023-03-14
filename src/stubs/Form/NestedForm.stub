@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Form;
+namespace App\Form;
 
-use Admin\Admin;
-use Admin\Form;
-use Admin\Widgets\Form as WidgetForm;
+use App\Admin;
+use App\Form;
+use App\Widgets\Form as WidgetForm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

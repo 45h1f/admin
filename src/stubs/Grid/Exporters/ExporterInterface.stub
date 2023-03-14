@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Grid\Exporters;
+namespace App\Grid\Exporters;
 
 interface ExporterInterface
 {

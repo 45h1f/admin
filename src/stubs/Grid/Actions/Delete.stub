@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Actions;
+namespace App\Grid\Actions;
 
-use Admin\Actions\Response;
-use Admin\Actions\RowAction;
+use App\Actions\Response;
+use App\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 

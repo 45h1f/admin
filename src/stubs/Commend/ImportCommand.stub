@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Console;
+namespace App\Console;
 
-use Admin\Admin;
+use App\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 

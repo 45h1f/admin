@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Form;
+namespace App\Form;
 
-use Admin\Form;
-use Admin\Widgets\Form as WidgetForm;
+use App\Form;
+use App\Widgets\Form as WidgetForm;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 

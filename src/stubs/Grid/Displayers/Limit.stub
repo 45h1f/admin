@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Facades\Admin;
+use App\Facades\Admin;
 use Illuminate\Support\Str;
 
 class Limit extends AbstractDisplayer

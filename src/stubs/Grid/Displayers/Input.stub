@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Admin;
+use App\Admin;
 
 class Input extends AbstractDisplayer
 {

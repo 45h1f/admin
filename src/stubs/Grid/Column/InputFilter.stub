@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Column;
+namespace App\Grid\Column;
 
-use Admin\Admin;
-use Admin\Grid\Model;
+use App\Admin;
+use App\Grid\Model;
 
 class InputFilter extends Filter
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Widgets\Carousel as CarouselWidget;
+use App\Widgets\Carousel as CarouselWidget;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Storage;
 

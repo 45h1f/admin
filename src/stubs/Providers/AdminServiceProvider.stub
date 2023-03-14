@@ -1,32 +1,32 @@
 <?php
 
-namespace Admin\Providers;
+namespace App\Providers;
 
-use Admin\Console\ActionCommand;
-use Admin\Console\AdminCommand;
-use Admin\Console\ConfigCommand;
-use Admin\Console\ControllerCommand;
-use Admin\Console\CreateUserCommand;
-use Admin\Console\ExportSeedCommand;
-use Admin\Console\ExtendCommand;
-use Admin\Console\FormCommand;
-use Admin\Console\GenerateMenuCommand;
-use Admin\Console\ImportCommand;
-use Admin\Console\InstallCommand;
-use Admin\Console\MakeCommand;
-use Admin\Console\MenuCommand;
-use Admin\Console\MinifyCommand;
-use Admin\Console\PermissionCommand;
-use Admin\Console\PublishCommand;
-use Admin\Console\ResetPasswordCommand;
-use Admin\Console\UninstallCommand;
-use Admin\Http\Middleware\AdminAuthenticate;
-use Admin\Http\Middleware\Bootstrap;
-use Admin\Http\Middleware\LogOperation;
-use Admin\Http\Middleware\Permission;
-use Admin\Http\Middleware\Pjax;
-use Admin\Http\Middleware\Session;
-use Admin\Layout\Content;
+use App\Console\ActionCommand;
+use App\Console\AdminCommand;
+use App\Console\ConfigCommand;
+use App\Console\ControllerCommand;
+use App\Console\CreateUserCommand;
+use App\Console\ExportSeedCommand;
+use App\Console\ExtendCommand;
+use App\Console\FormCommand;
+use App\Console\GenerateMenuCommand;
+use App\Console\ImportCommand;
+use App\Console\InstallCommand;
+use App\Console\MakeCommand;
+use App\Console\MenuCommand;
+use App\Console\MinifyCommand;
+use App\Console\PermissionCommand;
+use App\Console\PublishCommand;
+use App\Console\ResetPasswordCommand;
+use App\Console\UninstallCommand;
+use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\Bootstrap;
+use App\Http\Middleware\LogOperation;
+use App\Http\Middleware\Permission;
+use App\Http\Middleware\Pjax;
+use App\Http\Middleware\Session;
+use App\Layout\Content;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
@@ -39,24 +39,24 @@ class AdminServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-       AdminCommand::class,
-       MakeCommand::class,
-       ControllerCommand::class,
-       MenuCommand::class,
-       InstallCommand::class,
-       PublishCommand::class,
-       UninstallCommand::class,
-       ImportCommand::class,
-       CreateUserCommand::class,
-       ResetPasswordCommand::class,
-       ExtendCommand::class,
-       ExportSeedCommand::class,
-       MinifyCommand::class,
-       FormCommand::class,
-       PermissionCommand::class,
-       ActionCommand::class,
-       GenerateMenuCommand::class,
-       ConfigCommand::class,
+        AdminCommand::class,
+        MakeCommand::class,
+        ControllerCommand::class,
+        MenuCommand::class,
+        InstallCommand::class,
+        PublishCommand::class,
+        UninstallCommand::class,
+        ImportCommand::class,
+        CreateUserCommand::class,
+        ResetPasswordCommand::class,
+        ExtendCommand::class,
+        ExportSeedCommand::class,
+        MinifyCommand::class,
+        FormCommand::class,
+        PermissionCommand::class,
+        ActionCommand::class,
+        GenerateMenuCommand::class,
+        ConfigCommand::class,
     ];
 
     /**
@@ -65,12 +65,12 @@ class AdminServiceProvider extends ServiceProvider
      * @var array
      */
     protected $routeMiddleware = [
-        'admin.auth'       => AdminAuthenticate::class,
-        'admin.pjax'       => Pjax::class,
-        'admin.log'        => LogOperation::class,
+        'admin.auth' => AdminAuthenticate::class,
+        'admin.pjax' => Pjax::class,
+        'admin.log' => LogOperation::class,
         'admin.permission' => Permission::class,
-        'admin.bootstrap'  => Bootstrap::class,
-        'admin.session'    => Session::class,
+        'admin.bootstrap' => Bootstrap::class,
+        'admin.session' => Session::class,
     ];
 
     /**
@@ -96,19 +96,21 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include base_path('Admin/Helpers/admin.php');
+        include app_path('Helpers/admin.php');
 
-        $this->loadViewsFrom(base_path('Admin/resources/views'), 'admin');
+        $this->loadMigrationsFrom(base_path('database/migrations'));
+
+        $this->loadViewsFrom(app()->viewPath('admin'), 'admin');
 
         $this->ensureHttps();
 
-        $this->loadRoutesFrom(base_path('Admin/routes/web.php'));
+        $this->loadRoutesFrom(base_path('routes/admin.php'));
 
 
         $this->compatibleBlade();
 
         Blade::directive('box', function ($title) {
-            return "<?php \$box = new \Admin\Widgets\Box({$title}, '";
+            return "<?php \$box = new \App\Widgets\Box({$title}, '";
         });
 
         Blade::directive('endbox', function ($expression) {
@@ -123,7 +125,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected function ensureHttps()
     {
-        $is_admin = Str::startsWith(request()->getRequestUri(), '/'.ltrim(config('admin.route.prefix'), '/'));
+        $is_admin = Str::startsWith(request()->getRequestUri(), '/' . ltrim(config('admin.route.prefix'), '/'));
         if ((config('admin.https') || config('admin.secure')) && $is_admin) {
             url()->forceScheme('https');
             $this->app['request']->server->set('HTTPS', true);

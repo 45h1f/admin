@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Form;
+namespace App\Form;
 
-use Admin\Admin;
-use Admin\Form;
-use Admin\Form\Field\Hidden;
+use App\Admin;
+use App\Form;
+use App\Form\Field\Hidden;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\URL;

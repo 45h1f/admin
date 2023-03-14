@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Grid\Concerns;
+namespace App\Grid\Concerns;
 
-use Admin\Grid;
-use Admin\Grid\Exporter;
-use Admin\Grid\Exporters\AbstractExporter;
+use App\Grid;
+use App\Grid\Exporter;
+use App\Grid\Exporters\AbstractExporter;
 
 trait CanExportGrid
 {

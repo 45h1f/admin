@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Grid\Displayers;
+namespace App\Grid\Displayers;
 
-use Admin\Admin;
-use Admin\Grid\Simple;
+use App\Admin;
+use App\Grid\Simple;
 use Illuminate\Contracts\Support\Renderable;
 
 class Modal extends AbstractDisplayer

@@ -1,9 +1,9 @@
 <?php
 
-namespace Admin\Form\Field;
+namespace App\Form\Field;
 
-use Admin\Facades\Admin;
-use Admin\Form\Field;
+use App\Facades\Admin;
+use App\Form\Field;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

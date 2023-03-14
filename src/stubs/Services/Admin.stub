@@ -323,7 +323,7 @@ class Admin
     {
         $this->fireBootingCallbacks();
 
-        require app_path('../bootstrap/app.php');
+        require app_path('../bootstrap/admin_app.php');
 
         $this->addAdminAssets();
 

@@ -2,6 +2,7 @@
 
 namespace Ashiful\Admin\Console;
 
+use App\Auth\Database\AdminTablesSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
@@ -23,6 +24,19 @@ class  InstallCommand extends Command
     public function handle()
     {
         $this->installAdminFiles();
+
+        $this->initDatabase();
+    }
+
+    public function initDatabase()
+    {
+        $this->call('migrate');
+
+        $userModel = config('admin.database.users_model');
+
+        if ($userModel::count() == 0) {
+            $this->call('db:seed', ['--class' => AdminTablesSeeder::class]);
+        }
     }
 
     protected function installAdminFiles()

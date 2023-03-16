@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AdminHandler;
 use Closure;
-use App\Exception\Handler;
 use App\Grid\Column;
 use App\Grid\Concerns;
 use App\Grid\Displayers;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use Jenssegers\Mongodb\Eloquent\Model as MongodbModel;
+//use Jenssegers\Mongodb\Eloquent\Model as MongodbModel;
 
 class Grid
 {
@@ -37,8 +37,8 @@ class Grid
         Concerns\CanDoubleClick,
         ShouldSnakeAttributes,
         Macroable {
-            __call as macroCall;
-        }
+        Macroable::__call as macroCall;
+    }
 
     /**
      * The grid data model instance.
@@ -929,7 +929,7 @@ class Grid
         try {
             $this->build();
         } catch (\Exception $e) {
-            return Handler::renderException($e);
+            return AdminHandler::renderException($e);
         }
 
         $this->callRenderingCallback();

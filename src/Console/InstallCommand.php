@@ -109,7 +109,7 @@ class  InstallCommand extends Command
 
     public function assetCopy()
     {
-        $this->copy_dir(__DIR__ . '/../../resources/assets', public_path('admin/assets'));
+        $this->copy_dir(__DIR__ . '/../../resources/assets', public_path('assets'));
         $this->components->info('assets copied...');
     }
 
@@ -371,6 +371,7 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanDoubleClick.stub', app_path('Grid/Concerns/CanDoubleClick.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanExportGrid.stub', app_path('Grid/Concerns/CanExportGrid.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanFixColumns.stub', app_path('Grid/Concerns/CanFixColumns.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanFixHeader.stub', app_path('Grid/Concerns/CanFixHeader.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/CanHidesColumns.stub', app_path('Grid/Concerns/CanHidesColumns.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasActions.stub', app_path('Grid/Concerns/HasActions.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Grid/Concerns/HasElementNames.stub', app_path('Grid/Concerns/HasElementNames.php'));

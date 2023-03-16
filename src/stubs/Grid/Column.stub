@@ -3,8 +3,8 @@
 namespace App\Grid;
 
 use Closure;
-use App\Actions\RowAction;
-use App\Grid;
+use App\Http\Actions\RowAction;
+use App\Services\Grid;
 use App\Grid\Displayers\AbstractDisplayer;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model as BaseModel;

@@ -2,8 +2,11 @@
 
 namespace App\Grid\Concerns;
 
+use App\Grid\Column;
+use App\Grid\Displayers\Actions;
+use App\Grid\Tools;
 use Closure;
-use App\Grid;
+use App\Services\Grid;
 
 trait HasActions
 {
@@ -52,7 +55,7 @@ trait HasActions
             return $class;
         }
 
-        return Grid\Displayers\Actions::class;
+        return Actions::class;
     }
 
     /**
@@ -62,7 +65,7 @@ trait HasActions
      */
     public function setActionClass(string $actionClass)
     {
-        if (is_subclass_of($actionClass, Grid\Displayers\Actions::class) || ($actionClass == Grid\Displayers\Actions::class)) {
+        if (is_subclass_of($actionClass, Actions::class) || ($actionClass == Actions::class)) {
             $this->actionsClass = $actionClass;
         }
 
@@ -88,7 +91,7 @@ trait HasActions
      */
     public function batchActions(Closure $closure)
     {
-        $this->tools(function (Grid\Tools $tools) use ($closure) {
+        $this->tools(function (Tools $tools) use ($closure) {
             $tools->batch($closure);
         });
 
@@ -118,7 +121,7 @@ trait HasActions
             return;
         }
 
-        $this->addColumn(Grid\Column::ACTION_COLUMN_NAME, trans('admin.action'))
+        $this->addColumn(Column::ACTION_COLUMN_NAME, trans('admin.action'))
             ->displayUsing($this->getActionClass(), [$this->actionsCallback]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Grid\Column;
 
-use App\Admin;
+use App\Services\Admin;
 use App\Grid\Model;
 
 class InputFilter extends Filter

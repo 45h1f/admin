@@ -2,7 +2,7 @@
 
 namespace App\Form\Field;
 
-use App\Admin;
+use App\Services\Admin;
 
 class Fieldset
 {

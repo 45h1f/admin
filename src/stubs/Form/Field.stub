@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use Closure;
-use App\Admin;
+use App\Services\Admin;
 use App\Form;
 use App\Widgets\Form as WidgetForm;
 use Illuminate\Contracts\Support\Arrayable;

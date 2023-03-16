@@ -2,7 +2,7 @@
 
 namespace App\Show;
 
-use App\Grid;
+use App\Services\Grid;
 use App\Show;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;

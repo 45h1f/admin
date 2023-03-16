@@ -12,11 +12,11 @@ class Radio extends Field
     protected $inline = true;
 
     protected static $css = [
-        '/vendor/laravel-admin/AdminLTE/plugins/iCheck/all.css',
+        '/assets/AdminLTE/plugins/iCheck/all.css',
     ];
 
     protected static $js = [
-        '/vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js',
+        '/assets/AdminLTE/plugins/iCheck/icheck.min.js',
     ];
 
     /**

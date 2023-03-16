@@ -3,7 +3,7 @@
 namespace App\Grid\Actions;
 
 use App\Actions\Response;
-use App\Actions\RowAction;
+use App\Http\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 

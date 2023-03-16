@@ -2,7 +2,7 @@
 
 namespace App\Show;
 
-use App\Admin;
+use App\Services\Admin;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;

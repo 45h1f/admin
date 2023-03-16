@@ -2,8 +2,9 @@
 
 namespace App\Http\Actions;
 
-use App\Admin;
+use App\Services\Admin;
 use App\Form\Field;
+use App\Traits\Authorizable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
@@ -71,9 +72,6 @@ abstract class Action implements Renderable
      */
     public $selectorPrefix = '.action-';
 
-    /**
-     * @var Interactor\Interactor
-     */
     protected $interactor;
 
     /**
@@ -100,11 +98,11 @@ abstract class Action implements Renderable
     protected function initInteractor()
     {
         if ($hasForm = method_exists($this, 'form')) {
-            $this->interactor = new Interactor\Form($this);
+            $this->interactor = new Form($this);
         }
 
         if ($hasDialog = method_exists($this, 'dialog')) {
-            $this->interactor = new Interactor\Dialog($this);
+            $this->interactor = new Dialog($this);
         }
 
         if ($hasForm && $hasDialog) {
@@ -253,7 +251,7 @@ abstract class Action implements Renderable
      */
     public function validate(Request $request)
     {
-        if ($this->interactor instanceof Interactor\Form) {
+        if ($this->interactor instanceof Form) {
             $this->interactor->validate($request);
         }
 
@@ -404,7 +402,7 @@ SCRIPT;
      */
     public function __call($method, $arguments = [])
     {
-        if (in_array($method, Interactor\Interactor::$elements)) {
+        if (in_array($method, Interactor::$elements)) {
             return $this->interactor->{$method}(...$arguments);
         }
 
@@ -427,7 +425,7 @@ SCRIPT;
 
         $content = $this->html();
 
-        if ($content && $this->interactor instanceof Interactor\Form) {
+        if ($content && $this->interactor instanceof Form) {
             return $this->interactor->addElementAttr($content, $this->selector);
         }
 

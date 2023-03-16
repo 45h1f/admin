@@ -2,7 +2,7 @@
 
 namespace App\Grid\Tools;
 
-use App\Grid;
+use App\Services\Grid;
 use Illuminate\Support\Collection;
 
 class FixColumns

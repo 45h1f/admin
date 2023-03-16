@@ -2,7 +2,7 @@
 
 namespace App\Grid\Concerns;
 
-use App\Admin;
+use App\Services\Admin;
 
 trait CanDoubleClick
 {

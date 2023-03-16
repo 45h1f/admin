@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Action;
 use App\Actions\GridAction;
 use App\Actions\Response;
-use App\Actions\RowAction;
+use App\Http\Actions\RowAction;
 use App\Widgets\Form;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;

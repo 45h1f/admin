@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Admin;
+use App\Services\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;

@@ -13,11 +13,11 @@ class Checkbox extends MultipleSelect
     protected $groups = null;
 
     protected static $css = [
-        '/vendor/laravel-admin/AdminLTE/plugins/iCheck/all.css',
+        '/assets/AdminLTE/plugins/iCheck/all.css',
     ];
 
     protected static $js = [
-        '/vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js',
+        '/assets/AdminLTE/plugins/iCheck/icheck.min.js',
     ];
 
     /**

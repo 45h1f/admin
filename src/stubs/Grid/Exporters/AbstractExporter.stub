@@ -2,7 +2,7 @@
 
 namespace App\Grid\Exporters;
 
-use App\Grid;
+use App\Services\Grid;
 
 abstract class AbstractExporter implements ExporterInterface
 {

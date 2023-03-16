@@ -2,7 +2,7 @@
 
 namespace App\Grid\Tools;
 
-use App\Grid;
+use App\Services\Grid;
 use Illuminate\Contracts\Support\Renderable;
 
 abstract class AbstractTool implements Renderable

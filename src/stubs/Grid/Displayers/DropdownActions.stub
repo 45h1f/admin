@@ -2,8 +2,8 @@
 
 namespace App\Grid\Displayers;
 
-use App\Actions\RowAction;
-use App\Admin;
+use App\Http\Actions\RowAction;
+use App\Services\Admin;
 use App\Grid\Actions\Delete;
 use App\Grid\Actions\Edit;
 use App\Grid\Actions\Show;

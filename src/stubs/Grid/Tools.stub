@@ -3,7 +3,7 @@
 namespace App\Grid;
 
 use App\Actions\GridAction;
-use App\Grid;
+use App\Services\Grid;
 use App\Grid\Tools\AbstractTool;
 use App\Grid\Tools\BatchActions;
 use App\Grid\Tools\FilterButton;

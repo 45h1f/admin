@@ -2,8 +2,8 @@
 
 namespace App\Grid\Tools;
 
-use App\Admin;
-use App\Grid;
+use App\Services\Admin;
+use App\Services\Grid;
 use Illuminate\Support\Collection;
 
 class ColumnSelector extends AbstractTool

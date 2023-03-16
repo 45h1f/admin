@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Admin;
+use App\Services\Admin;
 use App\Facades\Admin as AdminFacade;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

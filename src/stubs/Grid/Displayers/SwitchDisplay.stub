@@ -2,7 +2,7 @@
 
 namespace App\Grid\Displayers;
 
-use App\Admin;
+use App\Services\Admin;
 use Illuminate\Support\Arr;
 
 class SwitchDisplay extends AbstractDisplayer

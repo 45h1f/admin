@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use App\Admin;
+use App\Services\Admin;
 
 class Dialog extends Interactor
 {

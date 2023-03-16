@@ -203,18 +203,18 @@ class  InstallCommand extends Command
 
     public function actionCopy()
     {
-        $actionPath = app_path('Http/Actions');
+        $actionPath = app_path('Actions');
         (new Filesystem)->ensureDirectoryExists($actionPath);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Action.stub', app_path('Http/Actions/Action.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/BatchAction.stub', app_path('Http/Actions/BatchAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Dialog.stub', app_path('Http/Actions/Dialog.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Form.stub', app_path('Http/Actions/Form.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/GridAction.stub', app_path('Http/Actions/GridAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Interactor.stub', app_path('Http/Actions/Interactor.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Response.stub', app_path('Http/Actions/Response.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/RowAction.stub', app_path('Http/Actions/RowAction.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/SweatAlert2.stub', app_path('Http/Actions/SweatAlert2.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Toastr.stub', app_path('Http/Actions/Toastr.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Action.stub', app_path('Actions/Action.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/BatchAction.stub', app_path('Actions/BatchAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Dialog.stub', app_path('Actions/Dialog.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Form.stub', app_path('Actions/Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/GridAction.stub', app_path('Actions/GridAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Interactor.stub', app_path('Actions/Interactor.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Response.stub', app_path('Actions/Response.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/RowAction.stub', app_path('Actions/RowAction.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/SweatAlert2.stub', app_path('Actions/SweatAlert2.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Actions/Toastr.stub', app_path('Actions/Toastr.php'));
 
         $this->components->info('action copied...');
     }

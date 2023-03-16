@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Actions;
+namespace App\Actions;
 
-use App\Http\Actions\RowAction;
+use App\Actions\RowAction;
 use App\Admin;
 use App\Form\Field;
 use Illuminate\Http\Request;

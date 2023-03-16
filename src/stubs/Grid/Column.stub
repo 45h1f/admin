@@ -3,7 +3,7 @@
 namespace App\Grid;
 
 use Closure;
-use App\Http\Actions\RowAction;
+use App\Actions\RowAction;
 use App\Grid;
 use App\Grid\Displayers\AbstractDisplayer;
 use Illuminate\Contracts\Support\Arrayable;

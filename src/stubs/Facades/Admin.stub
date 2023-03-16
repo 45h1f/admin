@@ -35,6 +35,6 @@ class Admin extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Services\Admin::class;
+        return \App\Admin::class;
     }
 }

@@ -6,7 +6,7 @@ use App\Grid\Column;
 use App\Grid\Displayers\Actions;
 use App\Grid\Tools;
 use Closure;
-use App\Services\Grid;
+use App\Grid;
 
 trait HasActions
 {

@@ -2,7 +2,7 @@
 
 namespace App\Grid\Displayers;
 
-use App\Services\Admin;
+use App\Admin;
 
 class Textarea extends AbstractDisplayer
 {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use App\Services\Grid;
+use App\Grid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 

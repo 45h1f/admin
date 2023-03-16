@@ -2,12 +2,12 @@
 
 namespace App\Grid\Tools;
 
-use App\Services\Admin;
+use App\Admin;
 use App\Form\Field;
 use App\Form\Field\MultipleSelect;
 use App\Form\Field\Select;
 use App\Form\Field\Text;
-use App\Services\Grid;
+use App\Grid;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 

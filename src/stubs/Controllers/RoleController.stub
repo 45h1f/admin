@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Form;
-use App\Services\Grid;
+use App\Grid;
 use App\Show;
 
 class RoleController extends AdminController

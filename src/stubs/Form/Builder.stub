@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Services\Admin;
+use App\Admin;
 use App\Form;
 use App\Form\Field\Hidden;
 use Illuminate\Support\Arr;

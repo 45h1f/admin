@@ -2,8 +2,8 @@
 
 namespace App\Grid\Tools;
 
-use App\Services\Admin;
-use App\Services\Grid;
+use App\Admin;
+use App\Grid;
 
 class PerPageSelector extends AbstractTool
 {

@@ -565,13 +565,12 @@ class  InstallCommand extends Command
 
     public function copyService()
     {
-        (new Filesystem)->ensureDirectoryExists(app_path('Services'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Admin.stub', app_path('Services/Admin.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Extension.stub', app_path('Services/Extension.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Form.stub', app_path('Services/Form.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Grid.stub', app_path('Services/Grid.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Show.stub', app_path('Services/Show.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Services/Tree.stub', app_path('Services/Tree.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Admin.stub', app_path('Admin.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Extension.stub', app_path('Extension.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Form.stub', app_path('Form.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Grid.stub', app_path('Grid.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Show.stub', app_path('Show.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Tree.stub', app_path('Tree.php'));
         $this->components->info('service copied...');
     }
 

@@ -1,8 +1,23 @@
 <?php
 
-namespace App\Services;
+namespace App;
 
 use App\Exceptions\AdminHandler;
+use App\Grid\Concerns\CanDoubleClick;
+use App\Grid\Concerns\CanExportGrid;
+use App\Grid\Concerns\CanFixColumns;
+use App\Grid\Concerns\CanFixHeader;
+use App\Grid\Concerns\CanHidesColumns;
+use App\Grid\Concerns\HasActions;
+use App\Grid\Concerns\HasElementNames;
+use App\Grid\Concerns\HasFilter;
+use App\Grid\Concerns\HasFooter;
+use App\Grid\Concerns\HasHeader;
+use App\Grid\Concerns\HasHotKeys;
+use App\Grid\Concerns\HasQuickCreate;
+use App\Grid\Concerns\HasSelector;
+use App\Grid\Concerns\HasTools;
+use App\Grid\Concerns\HasTotalRow;
 use Closure;
 use App\Grid\Column;
 use App\Grid\Concerns;
@@ -20,21 +35,21 @@ use Illuminate\Support\Traits\Macroable;
 
 class Grid
 {
-    use Concerns\HasElementNames,
-        Concerns\HasHeader,
-        Concerns\HasFooter,
-        Concerns\HasFilter,
-        Concerns\HasTools,
-        Concerns\HasTotalRow,
-        Concerns\HasHotKeys,
-        Concerns\HasQuickCreate,
-        Concerns\HasActions,
-        Concerns\HasSelector,
-        Concerns\CanHidesColumns,
-        Concerns\CanFixHeader,
-        Concerns\CanFixColumns,
-        Concerns\CanExportGrid,
-        Concerns\CanDoubleClick,
+    use HasElementNames,
+        HasHeader,
+        HasFooter,
+        HasFilter,
+        HasTools,
+        HasTotalRow,
+        HasHotKeys,
+        HasQuickCreate,
+        HasActions,
+        HasSelector,
+        CanHidesColumns,
+        CanFixHeader,
+        CanFixColumns,
+        CanExportGrid,
+        CanDoubleClick,
         ShouldSnakeAttributes,
         Macroable {
         Macroable::__call as macroCall;

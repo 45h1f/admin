@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Controllers\AdminController;
 use App\Form;
-use App\Services\Grid;
+use App\Grid;
 use App\Show;
 
 class ExampleController extends AdminController

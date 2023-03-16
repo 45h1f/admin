@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions;
 
-use App\Services\Admin;
+use App\Admin;
 use App\Form\Field;
 use App\Traits\Authorizable;
 use Illuminate\Contracts\Support\Renderable;

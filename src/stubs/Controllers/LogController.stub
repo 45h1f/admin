@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Auth\Database\OperationLog;
-use App\Services\Grid;
+use App\Grid;
 use Illuminate\Support\Arr;
 
 class LogController extends AdminController

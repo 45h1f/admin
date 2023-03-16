@@ -2,7 +2,7 @@
 
 namespace App\Grid\Tools;
 
-use App\Services\Grid;
+use App\Grid;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Query\Builder;

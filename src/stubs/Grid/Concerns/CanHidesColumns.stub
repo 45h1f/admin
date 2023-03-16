@@ -2,7 +2,8 @@
 
 namespace App\Grid\Concerns;
 
-use App\Services\Grid;
+use App\Grid\Column;
+use App\Grid;
 use App\Grid\Tools\ColumnSelector;
 use Illuminate\Support\Collection;
 
@@ -91,9 +92,9 @@ trait CanHidesColumns
             return $this->columns;
         }
 
-        array_push($visible, Grid\Column::SELECT_COLUMN_NAME, Grid\Column::ACTION_COLUMN_NAME);
+        array_push($visible, Column::SELECT_COLUMN_NAME, Column::ACTION_COLUMN_NAME);
 
-        return $this->columns->filter(function (Grid\Column $column) use ($visible) {
+        return $this->columns->filter(function (Column $column) use ($visible) {
             return in_array($column->getName(), $visible);
         });
     }
@@ -111,7 +112,7 @@ trait CanHidesColumns
             return $this->columnNames;
         }
 
-        array_push($visible, Grid\Column::SELECT_COLUMN_NAME, Grid\Column::ACTION_COLUMN_NAME);
+        array_push($visible, Column::SELECT_COLUMN_NAME, Column::ACTION_COLUMN_NAME);
 
         return collect($this->columnNames)->filter(function ($column) use ($visible) {
             return in_array($column, $visible);
@@ -129,7 +130,7 @@ trait CanHidesColumns
             array_diff(
                 $this->columnNames,
                 $this->hiddenColumns,
-                [Grid\Column::SELECT_COLUMN_NAME, Grid\Column::ACTION_COLUMN_NAME]
+                [Column::SELECT_COLUMN_NAME, Column::ACTION_COLUMN_NAME]
             )
         );
     }

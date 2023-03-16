@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Admin;
+use App\Admin;
 use Illuminate\Support\Arr;
 
 class Dashboard

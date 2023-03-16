@@ -2,7 +2,7 @@
 
 namespace App\Widgets\Navbar;
 
-use App\Services\Admin;
+use App\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 /**

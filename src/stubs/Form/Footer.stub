@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Services\Admin;
+use App\Admin;
 use Illuminate\Contracts\Support\Renderable;
 
 class Footer implements Renderable

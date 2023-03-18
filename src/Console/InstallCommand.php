@@ -95,13 +95,13 @@ class  InstallCommand extends Command
         }
 
         $addAdminFacade = '\'Admin\' => App\Facades\Admin::class,';
-
+        $config_content2 = file_get_contents($config_file);
         $keyPosition = strpos($config_content, "{$addAdminFacade}");
         if (!$keyPosition) {
             $regText2 = '\'aliases\' => Facade::defaultAliases()->merge([';
-            $regText2Check = strpos($config_content, "{$regText2}");
-            $begin = substr($config_content, 0, $regText2Check + 50);
-            $end = substr($config_content, $regText2Check + 50);
+            $regText2Check = strpos($config_content2, "{$regText2}");
+            $begin = substr($config_content2, 0, $regText2Check + 50);
+            $end = substr($config_content2, $regText2Check + 50);
             $config_contentUpdate2 = $begin . "\n" . $addAdminFacade . "\n" . $end;
             file_put_contents($config_file, $config_contentUpdate2);
         }

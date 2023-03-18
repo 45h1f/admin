@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Form;
 use App\Grid;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Show;
 
 class RoleController extends AdminController
@@ -23,7 +25,7 @@ class RoleController extends AdminController
      */
     protected function grid()
     {
-        $roleModel = config('admin.database.roles_model');
+        $roleModel = Role::class;
 
         $grid = new Grid(new $roleModel());
 
@@ -60,7 +62,7 @@ class RoleController extends AdminController
      */
     protected function detail($id)
     {
-        $roleModel = config('admin.database.roles_model');
+        $roleModel =Role::class;
 
         $show = new Show($roleModel::findOrFail($id));
 
@@ -83,8 +85,8 @@ class RoleController extends AdminController
      */
     public function form()
     {
-        $permissionModel = config('admin.database.permissions_model');
-        $roleModel = config('admin.database.roles_model');
+        $permissionModel = Permission::class;
+        $roleModel =Role::class;
 
         $form = new Form(new $roleModel());
 

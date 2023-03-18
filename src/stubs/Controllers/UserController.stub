@@ -8,6 +8,9 @@ use App\Grid\Tools;
 use App\Grid\Tools\BatchActions;
 use App\Form;
 use App\Grid;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use App\Show;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,12 +31,10 @@ class UserController extends AdminController
      */
     protected function grid()
     {
-        $userModel = config('admin.database.users_model');
-
-        $grid = new Grid(new $userModel());
+        $grid = new Grid(new User());
 
         $grid->column('id', 'ID')->sortable();
-        $grid->column('username', trans('admin.username'));
+        $grid->column('email', trans('admin.email'));
         $grid->column('name', trans('admin.name'));
         $grid->column('roles', trans('admin.roles'))->pluck('name')->label();
         $grid->column('created_at', trans('admin.created_at'));
@@ -63,12 +64,10 @@ class UserController extends AdminController
      */
     protected function detail($id)
     {
-        $userModel = config('admin.database.users_model');
-
-        $show = new Show($userModel::findOrFail($id));
+        $show = new Show(User::findOrFail($id));
 
         $show->field('id', 'ID');
-        $show->field('username', trans('admin.username'));
+        $show->field('email', trans('admin.email'));
         $show->field('name', trans('admin.name'));
         $show->field('roles', trans('admin.roles'))->as(function ($roles) {
             return $roles->pluck('name');
@@ -89,19 +88,15 @@ class UserController extends AdminController
      */
     public function form()
     {
-        $userModel = config('admin.database.users_model');
-        $permissionModel = config('admin.database.permissions_model');
-        $roleModel = config('admin.database.roles_model');
 
-        $form = new Form(new $userModel());
+        $form = new Form(new User());
 
-        $userTable = config('admin.database.users_table');
-        $connection = config('admin.database.connection');
+        $userTable = 'users';
 
         $form->display('id', 'ID');
-        $form->text('username', trans('admin.username'))
-            ->creationRules(['required', "unique:{$connection}.{$userTable}"])
-            ->updateRules(['required', "unique:{$connection}.{$userTable},username,{{id}}"]);
+        $form->text('email', trans('admin.email'))
+            ->creationRules(['required', "unique:{$userTable}"])
+            ->updateRules(['required', "unique:{$userTable},email,{{id}}"]);
 
         $form->text('name', trans('admin.name'))->rules('required');
         $form->image('avatar', trans('admin.avatar'));
@@ -113,8 +108,8 @@ class UserController extends AdminController
 
         $form->ignore(['password_confirmation']);
 
-        $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
-        $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
+        $form->multipleSelect('roles', trans('admin.roles'))->options(Role::all()->pluck('name', 'id'));
+        $form->multipleSelect('permissions', trans('admin.permissions'))->options(Permission::all()->pluck('name', 'id'));
 
         $form->display('created_at', trans('admin.created_at'));
         $form->display('updated_at', trans('admin.updated_at'));

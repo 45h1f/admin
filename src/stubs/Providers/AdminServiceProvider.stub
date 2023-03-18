@@ -12,14 +12,12 @@ use App\Console\ExtendCommand;
 use App\Console\FormCommand;
 use App\Console\GenerateMenuCommand;
 use App\Console\ImportCommand;
-use App\Console\InstallCommand;
 use App\Console\MakeCommand;
 use App\Console\MenuCommand;
 use App\Console\MinifyCommand;
 use App\Console\PermissionCommand;
 use App\Console\PublishCommand;
 use App\Console\ResetPasswordCommand;
-use App\Console\UninstallCommand;
 use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\Bootstrap;
 use App\Http\Middleware\LogOperation;
@@ -43,9 +41,7 @@ class AdminServiceProvider extends ServiceProvider
         MakeCommand::class,
         ControllerCommand::class,
         MenuCommand::class,
-        InstallCommand::class,
         PublishCommand::class,
-        UninstallCommand::class,
         ImportCommand::class,
         CreateUserCommand::class,
         ResetPasswordCommand::class,

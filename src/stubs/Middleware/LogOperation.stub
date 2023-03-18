@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Auth\Database\OperationLog as OperationLogModel;
+use App\Models\OperationLog as OperationLogModel;
 use App\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

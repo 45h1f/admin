@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\Admin;
 use App\Form;
 use App\Layout\Content;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class AdminAuthController extends Controller
+class AuthController extends Controller
 {
     /**
      * @var string
@@ -125,11 +126,10 @@ class AdminAuthController extends Controller
      */
     protected function settingForm()
     {
-        $class = config('admin.database.users_model');
 
-        $form = new Form(new $class());
+        $form = new Form(new User());
 
-        $form->display('username', trans('admin.username'));
+        $form->display('email', trans('admin.email'));
         $form->text('name', trans('admin.name'))->rules('required');
         $form->image('avatar', trans('admin.avatar'));
         $form->password('password', trans('admin.password'))->rules('confirmed|required');
@@ -204,7 +204,7 @@ class AdminAuthController extends Controller
      */
     protected function username()
     {
-        return 'username';
+        return 'email';
     }
 
     /**

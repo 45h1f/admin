@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,8 +28,6 @@ class CreateUserCommand extends Command
      */
     public function handle()
     {
-        $userModel = config('admin.database.users_model');
-        $roleModel = config('admin.database.roles_model');
 
         $username = $this->ask('Please enter a username to login');
 
@@ -35,7 +35,7 @@ class CreateUserCommand extends Command
 
         $name = $this->ask('Please enter a name to display');
 
-        $roles = $roleModel::all();
+        $roles = Role::all();
 
         /** @var array $selected */
         $selectedOption = $roles->pluck('name')->toArray();
@@ -48,7 +48,7 @@ class CreateUserCommand extends Command
             });
         }
 
-        $user = new $userModel(compact('username', 'password', 'name'));
+        $user = new User(compact('username', 'password', 'name'));
 
         $user->save();
 

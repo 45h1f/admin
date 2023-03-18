@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Auth\Database\Permission;
+use App\Models\Menu;
+use App\Models\Permission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
@@ -357,7 +358,7 @@ abstract class Extension
      */
     protected static function createMenu($title, $uri, $icon = 'fa-bars', $parentId = 0, array $children = [])
     {
-        $menuModel = config('admin.database.menu_model');
+        $menuModel = Menu::class;
 
         $lastOrder = $menuModel::max('order');
         /**

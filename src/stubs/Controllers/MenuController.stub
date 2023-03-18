@@ -6,6 +6,9 @@ use App\Form;
 use App\Layout\Column;
 use App\Layout\Content;
 use App\Layout\Row;
+use App\Models\Menu;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Tree;
 use App\Widgets\Box;
 use Illuminate\Routing\Controller;
@@ -33,9 +36,9 @@ class MenuController extends Controller
                     $form = new \App\Widgets\Form();
                     $form->action(admin_url('auth/menu'));
 
-                    $menuModel = config('admin.database.menu_model');
-                    $permissionModel = config('admin.database.permissions_model');
-                    $roleModel = config('admin.database.roles_model');
+                    $menuModel = Menu::class;
+                    $permissionModel = Permission::class;
+                    $roleModel = Role::class;
 
                     $form->select('parent_id', trans('admin.parent_id'))->options($menuModel::selectOptions());
                     $form->text('title', trans('admin.title'))->rules('required');
@@ -69,7 +72,7 @@ class MenuController extends Controller
      */
     protected function treeView()
     {
-        $menuModel = config('admin.database.menu_model');
+        $menuModel = Menu::class;
 
         $tree = new Tree(new $menuModel());
 
@@ -117,9 +120,9 @@ class MenuController extends Controller
      */
     public function form()
     {
-        $menuModel = config('admin.database.menu_model');
-        $permissionModel = config('admin.database.permissions_model');
-        $roleModel = config('admin.database.roles_model');
+        $menuModel = Menu::class;
+        $permissionModel = Permission::class;
+        $roleModel = Role::class;
 
         $form = new Form(new $menuModel());
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Database;
+namespace App\Models;
 
 use App\Traits\DefaultDatetimeFormat;
 use App\Traits\ModelTree;
@@ -29,21 +29,6 @@ class Menu extends Model
      */
     protected $fillable = ['parent_id', 'order', 'title', 'icon', 'uri', 'permission'];
 
-    /**
-     * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
-        $this->setTable(config('admin.database.menu_table'));
-
-        parent::__construct($attributes);
-    }
 
     /**
      * A Menu belongs to many roles.
@@ -52,11 +37,7 @@ class Menu extends Model
      */
     public function roles(): BelongsToMany
     {
-        $pivotTable = config('admin.database.role_menu_table');
-
-        $relatedModel = config('admin.database.roles_model');
-
-        return $this->belongsToMany($relatedModel, $pivotTable, 'menu_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'role_menus', 'menu_id', 'role_id');
     }
 
     /**
@@ -64,10 +45,9 @@ class Menu extends Model
      */
     public function allNodes(): array
     {
-        $connection = config('admin.database.connection') ?: config('database.default');
-        $orderColumn = DB::connection($connection)->getQueryGrammar()->wrap($this->orderColumn);
+        $orderColumn = DB::connection(config('database.default'))->getQueryGrammar()->wrap($this->orderColumn);
 
-        $byOrder = 'ROOT ASC,'.$orderColumn;
+        $byOrder = 'ROOT ASC,' . $orderColumn;
 
         $query = static::query();
 
@@ -75,7 +55,7 @@ class Menu extends Model
             $query->with('roles');
         }
 
-        return $query->selectRaw('*, '.$orderColumn.' ROOT')->orderByRaw($byOrder)->get()->toArray();
+        return $query->selectRaw('*, ' . $orderColumn . ' ROOT')->orderByRaw($byOrder)->get()->toArray();
     }
 
     /**
@@ -85,7 +65,7 @@ class Menu extends Model
      */
     public function withPermission()
     {
-        return (bool) config('admin.menu_bind_permission');
+        return (bool)config('admin.menu_bind_permission');
     }
 
     /**

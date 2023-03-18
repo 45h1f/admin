@@ -2,11 +2,8 @@
 
 namespace Ashiful\Admin\Console;
 
-use App\Auth\Database\AdminTablesSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\File;
-use function PHPUnit\Framework\fileExists;
 
 class  InstallCommand extends Command
 {
@@ -25,19 +22,8 @@ class  InstallCommand extends Command
     {
         $this->installAdminFiles();
 
-        $this->initDatabase();
     }
 
-    public function initDatabase()
-    {
-        $this->call('migrate');
-
-        $userModel = config('admin.database.users_model');
-
-        if ($userModel::count() == 0) {
-            $this->call('db:seed', ['--class' => AdminTablesSeeder::class]);
-        }
-    }
 
     protected function installAdminFiles()
     {
@@ -55,9 +41,9 @@ class  InstallCommand extends Command
             $this->routeCopy();
             $this->bootstrapCopy();
             $this->controllerCopy();
+            $this->modelCopy();
             $this->actionCopy();
             $this->exceptionCopy();
-            $this->authCopy();
             $this->facadeCopy();
             $this->formCopy();
             $this->gridCopy();
@@ -157,7 +143,6 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/FormCommand.stub', app_path('Console/FormCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/GenerateMenuCommand.stub', app_path('Console/GenerateMenuCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ImportCommand.stub', app_path('Console/ImportCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/InstallCommand.stub', app_path('Console/InstallCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MakeCommand.stub', app_path('Console/MakeCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MenuCommand.stub', app_path('Console/MenuCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MinifyCommand.stub', app_path('Console/MinifyCommand.php'));
@@ -165,7 +150,6 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PublishCommand.stub', app_path('Console/PublishCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResetPasswordCommand.stub', app_path('Console/ResetPasswordCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResourceGenerator.stub', app_path('Console/ResourceGenerator.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/UninstallCommand.stub', app_path('Console/UninstallCommand.php'));
         $this->components->info('commend copied...');
     }
 
@@ -199,7 +183,7 @@ class  InstallCommand extends Command
     {
         $controllerPath = app_path('Http/Controllers');
         (new Filesystem)->ensureDirectoryExists($controllerPath);
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminAuthController.stub', app_path('Http/Controllers/AdminAuthController.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AuthController.stub', app_path('Http/Controllers/AuthController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/HomeController.stub', app_path('Http/Controllers/HomeController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/ExampleController.stub', app_path('Http/Controllers/ExampleController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/AdminController.stub', app_path('Http/Controllers/AdminController.php'));
@@ -212,6 +196,21 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/PermissionController.stub', app_path('Http/Controllers/PermissionController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/RoleController.stub', app_path('Http/Controllers/RoleController.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Controllers/UserController.stub', app_path('Http/Controllers/UserController.php'));
+        $this->components->info('controller copied...');
+
+    }
+
+    public function modelCopy()
+    {
+        $ModelsPath = app_path('Models');
+        (new Filesystem)->ensureDirectoryExists($ModelsPath);
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Models/Menu.stub', app_path('Models/Menu.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Models/OperationLog.stub', app_path('Models/OperationLog.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Models/Permission.stub', app_path('Models/Permission.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Models/Role.stub', app_path('Models/Role.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Models/User.stub', app_path('Models/User.php'));
+
+        $this->components->info('model copied...');
     }
 
     public function actionCopy()
@@ -236,23 +235,6 @@ class  InstallCommand extends Command
     {
         $this->copy_file(__DIR__ . '/../stubs/Exceptions/AdminHandler.stub', app_path('Exceptions/AdminHandler.php'), app_path('Exceptions'));
         $this->components->info('exception copied...');
-    }
-
-    public function authCopy()
-    {
-        (new Filesystem)->ensureDirectoryExists(app_path('Auth'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Permission.stub', app_path('Auth/Permission.php'));
-        (new Filesystem)->ensureDirectoryExists(app_path('Auth/Database'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Administrator.stub', app_path('Auth/Database/Administrator.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/AdminTablesSeeder.stub', app_path('Auth/Database/AdminTablesSeeder.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/HasPermissions.stub', app_path('Auth/Database/HasPermissions.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Menu.stub', app_path('Auth/Database/Menu.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/OperationLog.stub', app_path('Auth/Database/OperationLog.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Permission.stub', app_path('Auth/Database/Permission.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Auth/Database/Role.stub', app_path('Auth/Database/Role.php'));
-
-
-        $this->components->info('auth copied...');
     }
 
     public function facadeCopy()
@@ -546,6 +528,8 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ModelTree.stub', app_path('Traits/ModelTree.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/Resizable.stub', app_path('Traits/Resizable.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/ShouldSnakeAttributes.stub', app_path('Traits/ShouldSnakeAttributes.php'));
+        (new Filesystem)->copy(__DIR__ . '/../stubs/Traits/HasPermissions.stub', app_path('Traits/HasPermissions.php'));
+
         $this->components->info('trait copied...');
     }
 

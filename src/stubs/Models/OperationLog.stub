@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Database;
+namespace App\Models;
 
 use App\Traits\DefaultDatetimeFormat;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +13,9 @@ class OperationLog extends Model
     protected $fillable = ['user_id', 'path', 'method', 'ip', 'input'];
 
     public static $methodColors = [
-        'GET'    => 'green',
-        'POST'   => 'yellow',
-        'PUT'    => 'blue',
+        'GET' => 'green',
+        'POST' => 'yellow',
+        'PUT' => 'blue',
         'DELETE' => 'red',
     ];
 
@@ -24,21 +24,6 @@ class OperationLog extends Model
         'LINK', 'UNLINK', 'COPY', 'HEAD', 'PURGE',
     ];
 
-    /**
-     * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
-        $this->setTable(config('admin.database.operation_log_table'));
-
-        parent::__construct($attributes);
-    }
 
     /**
      * Log belongs to users.
@@ -47,6 +32,6 @@ class OperationLog extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('admin.database.users_model'));
+        return $this->belongsTo(User::class);
     }
 }

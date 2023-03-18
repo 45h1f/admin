@@ -89,14 +89,14 @@ CODE;
     public function getStub()
     {
         if ($this->option('grid-batch')) {
-            return __DIR__.'/stubs/grid-batch-action.stub';
+            return resource_path('/stubs/grid-batch-action.stub');
         }
 
         if ($this->option('grid-row')) {
-            return __DIR__.'/stubs/grid-row-action.stub';
+            return resource_path('/stubs/grid-row-action.stub');
         }
 
-        return __DIR__.'/stubs/action.stub';
+        return resource_path('/stubs/action.stub');
     }
 
     /**
@@ -111,14 +111,7 @@ CODE;
         if ($namespace = $this->option('namespace')) {
             return $namespace;
         }
-
-        $segments = explode('\\', config('admin.route.namespace'));
-
-        array_pop($segments);
-
-        array_push($segments, 'Actions');
-
-        return implode('\\', $segments);
+        return 'App\\Actions';
     }
 
     /**

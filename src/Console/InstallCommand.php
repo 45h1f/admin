@@ -33,6 +33,7 @@ class  InstallCommand extends Command
             $this->copyConfig();
             $this->copyHelper();
             $this->assetCopy();
+            $this->stubsCopy();
             $this->langCopy();
             $this->viewCopy();
             $this->migrationCopy();
@@ -111,6 +112,11 @@ class  InstallCommand extends Command
         $this->copy_dir(__DIR__ . '/../../resources/assets', public_path('assets'));
         $this->components->info('assets copied...');
     }
+    public function stubsCopy()
+    {
+        $this->copy_dir(__DIR__ . '/../../resources/stubs', resource_path('stubs'));
+        $this->components->info('stubs copied...');
+    }
 
     public function langCopy()
     {
@@ -138,7 +144,6 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ConfigCommand.stub', app_path('Console/ConfigCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ControllerCommand.stub', app_path('Console/ControllerCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/CreateUserCommand.stub', app_path('Console/CreateUserCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExportSeedCommand.stub', app_path('Console/ExportSeedCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ExtendCommand.stub', app_path('Console/ExtendCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/FormCommand.stub', app_path('Console/FormCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/GenerateMenuCommand.stub', app_path('Console/GenerateMenuCommand.php'));
@@ -147,7 +152,6 @@ class  InstallCommand extends Command
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MenuCommand.stub', app_path('Console/MenuCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/MinifyCommand.stub', app_path('Console/MinifyCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PermissionCommand.stub', app_path('Console/PermissionCommand.php'));
-        (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/PublishCommand.stub', app_path('Console/PublishCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResetPasswordCommand.stub', app_path('Console/ResetPasswordCommand.php'));
         (new Filesystem)->copy(__DIR__ . '/../stubs/Commend/ResourceGenerator.stub', app_path('Console/ResourceGenerator.php'));
         $this->components->info('commend copied...');

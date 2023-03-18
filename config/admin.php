@@ -159,42 +159,6 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel-admin database settings
-    |--------------------------------------------------------------------------
-    |
-    | Here are database settings for laravel-admin builtin model & tables.
-    |
-    */
-//    'database' => [
-//
-//        // Database connection for following tables.
-//        'connection' => '',
-//
-//        // User tables and model.
-//        'users_table' => 'users',
-//        'users_model' => \App\Models\User::class,
-//
-//        // Role table and model.
-//        'roles_table' => 'roles',
-//        'roles_model' => Role::class,
-//
-//        // Permission table and model.
-//        'permissions_table' => 'permissions',
-//        'permissions_model' => Permission::class,
-//
-//        // Menu table and model.
-//        'menu_table' => 'menus',
-//        'menu_model' => Menu::class,
-//
-//        // Pivot table for table above.
-//        'operation_log_table' => 'operation_logs',
-//        'user_permissions_table' => 'user_permissions',
-//        'role_users_table' => 'role_users',
-//        'role_permissions_table' => 'role_permissions',
-//        'role_menu_table' => 'role_menus',
-//    ],
 
     /*
     |--------------------------------------------------------------------------

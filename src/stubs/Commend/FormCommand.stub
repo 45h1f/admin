@@ -46,10 +46,9 @@ class FormCommand extends GeneratorCommand
     protected function getStub()
     {
         if ($this->option('step')) {
-            return __DIR__.'/stubs/step-form.stub';
+            return resource_path('/stubs/step-form.stub');
         }
-
-        return __DIR__.'/stubs/form.stub';
+        return resource_path('/stubs/form.stub');
     }
 
     /**
@@ -64,8 +63,7 @@ class FormCommand extends GeneratorCommand
         if ($namespace = $this->option('namespace')) {
             return $namespace;
         }
-
-        return str_replace('Controllers', 'Forms', config('admin.route.namespace'));
+        return 'App\\Form';
     }
 
     /**

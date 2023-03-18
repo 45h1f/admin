@@ -29,7 +29,7 @@ class CreateUserCommand extends Command
     public function handle()
     {
 
-        $username = $this->ask('Please enter a username to login');
+        $email = $this->ask('Please enter a email to login');
 
         $password = Hash::make($this->secret('Please enter a password to login'));
 
@@ -48,7 +48,7 @@ class CreateUserCommand extends Command
             });
         }
 
-        $user = new User(compact('username', 'password', 'name'));
+        $user = new User(compact('email', 'password', 'name'));
 
         $user->save();
 

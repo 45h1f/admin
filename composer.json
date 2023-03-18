@@ -5,7 +5,7 @@
         "ashiful",
         "admin"
     ],
-    "homepage": "https://github.com/ashiful/admin",
+    "homepage": "https://github.com/45h1f/admin",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -46,10 +46,7 @@
         "laravel": {
             "providers": [
                 "Ashiful\\Admin\\AdminServiceProvider"
-            ],
-            "aliases": {
-                "Admin": "Ashiful\\Admin\\AdminFacade"
-            }
+            ]
         }
     }
 }

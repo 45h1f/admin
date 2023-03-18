@@ -83,6 +83,7 @@ class  InstallCommand extends Command
         $config_file = config_path('app.php');
         $addAdminProvider = '\App\Providers\AdminServiceProvider::class,';
         $config_content = file_get_contents($config_file);
+
         $keyPosition = strpos($config_content, "{$addAdminProvider}");
         if (!$keyPosition) {
             $regText = 'App\Providers\RouteServiceProvider::class,';
@@ -91,6 +92,18 @@ class  InstallCommand extends Command
             $end = substr($config_content, $regTextCheck + 42);
             $config_contentUpdate = $begin . "\n" . $addAdminProvider . "\n" . $end;
             file_put_contents($config_file, $config_contentUpdate);
+        }
+
+        $addAdminFacade = '\'Admin\' => App\Facades\Admin::class,';
+
+        $keyPosition = strpos($config_content, "{$addAdminFacade}");
+        if (!$keyPosition) {
+            $regText2 = '\'aliases\' => Facade::defaultAliases()->merge([';
+            $regText2Check = strpos($config_content, "{$regText2}");
+            $begin = substr($config_content, 0, $regText2Check + 50);
+            $end = substr($config_content, $regText2Check + 50);
+            $config_contentUpdate2 = $begin . "\n" . $addAdminFacade . "\n" . $end;
+            file_put_contents($config_file, $config_contentUpdate2);
         }
         $this->components->info('add in provider...');
     }

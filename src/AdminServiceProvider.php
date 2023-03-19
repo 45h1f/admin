@@ -2,6 +2,7 @@
 
 namespace Ashiful\Admin;
 
+use Ashiful\Admin\Console\ExtensionCommand;
 use Ashiful\Admin\Console\InstallCommand;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,7 @@ class AdminServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
+                ExtensionCommand::class
             ]);
         }
     }

@@ -397,9 +397,9 @@ abstract class Extension
      */
     protected static function createPermission($name, $slug, $path, $methods = [])
     {
-        $permissionModel = config('admin.database.permissions_model');
 
-        $permissionModel::create([
+
+        Permission::create([
             'name'        => $name,
             'slug'        => $slug,
             'http_path'   => '/'.trim($path, '/'),

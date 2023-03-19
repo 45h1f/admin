@@ -1,0 +1,25 @@
+<?php
+
+namespace Ashiful\Extensions\LogViewer\Traits;
+
+use App\Admin;
+use Ashiful\Extensions\LogViewer\Controllers\LogController;
+
+trait BootExtension
+{
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        Admin::extend('log-viewer', __CLASS__);
+    }
+
+    protected static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->get('logs', [LogController::class, 'index'])->name('log-viewer-index');
+            $router->get('logs/{file}', [LogController::class, 'index'])->name('log-viewer-file');
+            $router->get('logs/{file}/tail', [LogController::class, 'tail'])->name('log-viewer-tail');
+        });
+    }
+}

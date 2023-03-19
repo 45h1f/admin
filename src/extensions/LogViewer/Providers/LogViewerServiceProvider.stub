@@ -1,0 +1,16 @@
+<?php
+
+namespace Ashiful\Extensions\LogViewer\Providers;
+
+use Ashiful\Extensions\LogViewer\Services\LogViewer;
+use Illuminate\Support\ServiceProvider;
+
+class LogViewerServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-admin-logs');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        LogViewer::boot();
+    }
+}

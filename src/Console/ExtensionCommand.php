@@ -29,14 +29,14 @@ class  ExtensionCommand extends Command
         if (isset($extensions[$ans])) {
             $item = $extensions[$ans];
 
-            $provider = "Extensions/LogViewer/Providers/{$item}ServiceProvider.php";
+            $provider = "Extensions/{$item}/Providers/{$item}ServiceProvider.php";
+
             if (file_exists(base_path($provider))) {
                 $this->error($item . ' Already Installed');
             } else {
                 $this->copyFiles($item);
-                $this->addProviderInConfig("\Ashiful\Extensions\LogViewer\Providers\\" . $item . "ServiceProvider::class,");
-                $this->importExtension($item);
-                $this->info('Extension Added successfully');
+                $this->addProviderInConfig("\Ashiful\Extensions\\" . $item . "\Providers\\" . $item . "ServiceProvider::class,");
+                $this->info($item . ' Extension Added successfully');
             }
         } else {
             $this->error('Invalid selection');
@@ -47,7 +47,8 @@ class  ExtensionCommand extends Command
     public function extensions()
     {
         return [
-            'LogViewer'
+            'LogViewer',
+            'Helpers'
         ];
     }
 
@@ -56,7 +57,9 @@ class  ExtensionCommand extends Command
         $config_file = config_path('app.php');
         $config_content = file_get_contents($config_file);
 
-        $keyPosition = strpos($config_content, "{$new_provider}");
+        $keyPosition = strpos($config_content, "{
+                    $new_provider}");
+
         if (!$keyPosition) {
             $regText = 'App\Providers\RouteServiceProvider::class,';
             $regTextCheck = strpos($config_content, "{$regText}");
@@ -69,31 +72,34 @@ class  ExtensionCommand extends Command
 
     public function copyFiles($item)
     {
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/Controllers"));
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/Controllers/LogController.stub", base_path("Extensions/{$item}/Controllers/LogController.php"));
+        $installer = new InstallCommand();
+        if ($item == 'LogViewer') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/LogController.stub", base_path("Extensions/{$item}/Controllers/LogController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/LogViewerServiceProvider.stub", base_path("Extensions/{$item}/Providers/LogViewerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/resources/views/logs.blade.php", base_path("Extensions/{$item}/resources/views/logs.blade.php"), base_path("Extensions/{$item}/resources/views"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/LogViewer.stub", base_path("Extensions/{$item}/Services/LogViewer.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Traits/BootExtension.stub", base_path("Extensions/{$item}/Traits/BootExtension.php"), base_path("Extensions/{$item}/Traits"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/migrations/2023_03_19_173148_import_log_viewer_extension.php", base_path("Extensions/{$item}/migrations/2023_03_19_173148_import_log_viewer_extension.php"), base_path("Extensions/{$item}/migrations"));
 
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/Providers"));
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/Providers/LogViewerServiceProvider.stub", base_path("Extensions/{$item}/Providers/LogViewerServiceProvider.php"));
+        } elseif ($item == 'Helpers') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/HelpersServiceProvider.stub", base_path("Extensions/{$item}/Providers/HelpersServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Helpers.stub", base_path("Extensions/{$item}/Services/Helpers.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/RouteController.stub", base_path("Extensions/{$item}/Controllers/RouteController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/ScaffoldController.stub", base_path("Extensions/{$item}/Controllers/ScaffoldController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/TerminalController.stub", base_path("Extensions/{$item}/Controllers/TerminalController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/resources/views/artisan.blade.php", base_path("extensions/{$item}/resources/views/artisan.blade.php"), base_path("extensions/{$item}/resources/views"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/resources/views/database.blade.php", base_path("extensions/{$item}/resources/views/database.blade.php"), base_path("extensions/{$item}/resources/views"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/resources/views/scaffold.blade.php", base_path("extensions/{$item}/resources/views/scaffold.blade.php"), base_path("extensions/{$item}/resources/views"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/Scaffold/ControllerCreator.stub", base_path("extensions/{$item}/Scaffold/ControllerCreator.php"), base_path("extensions/{$item}/Scaffold"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/Scaffold/MigrationCreator.stub", base_path("extensions/{$item}/Scaffold/MigrationCreator.php"), base_path("extensions/{$item}/Scaffold"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/Scaffold/ModelCreator.stub", base_path("extensions/{$item}/Scaffold/ModelCreator.php"), base_path("extensions/{$item}/Scaffold"));
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/Scaffold/stubs", base_path("extensions/{$item}/Scaffold/stubs"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_20_173148_import_helper_extension.php", base_path("extensions/{$item}/migrations/2023_03_20_173148_import_helper_extension.php"), base_path("extensions/{$item}/migrations"));
 
+        }
 
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/resources/views"));
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/resources/views/logs.blade.php", base_path("Extensions/{$item}/resources/views/logs.blade.php"));
-
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/Services"));
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/Services/LogViewer.stub", base_path("Extensions/{$item}/Services/LogViewer.php"));
-
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/Traits"));
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/Traits/BootExtension.stub", base_path("Extensions/{$item}/Traits/BootExtension.php"));
 
     }
 
-    public function importExtension($item)
-    {
-        (new Filesystem)->ensureDirectoryExists(base_path("Extensions/{$item}/migrations"));
-
-        (new Filesystem)->copy(__DIR__ . "/../extensions/{$item}/migrations/2023_03_19_173148_import_log_viewer_extension.php", base_path("Extensions/{$item}/migrations/2023_03_19_173148_import_log_viewer_extension.php"));
-
-
-    }
 
 }

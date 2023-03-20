@@ -1,0 +1,41 @@
+<?php
+
+namespace Ashiful\Extensions\Helpers\Services;
+
+use App\Admin;
+use App\Auth\Database\Menu;
+use App\Extension;
+
+class Helpers extends Extension
+{
+    /**
+     * Bootstrap this package.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        Admin::extend('helpers', __CLASS__);
+    }
+
+    /**
+     * Register routes for laravel-admin.
+     *
+     * @return void
+     */
+    public static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->get('helpers/terminal/database', 'Ashiful\Extensions\Helpers\Controllers\TerminalController@database');
+            $router->post('helpers/terminal/database', 'Ashiful\Extensions\Helpers\Controllers\TerminalController@runDatabase');
+            $router->get('helpers/terminal/artisan', 'Ashiful\Extensions\Helpers\Controllers\TerminalController@artisan');
+            $router->post('helpers/terminal/artisan', 'Ashiful\Extensions\Helpers\Controllers\TerminalController@runArtisan');
+            $router->get('helpers/scaffold', 'Ashiful\Extensions\Helpers\Controllers\ScaffoldController@index');
+            $router->post('helpers/scaffold', 'Ashiful\Extensions\Helpers\Controllers\ScaffoldController@store');
+            $router->get('helpers/routes', 'Ashiful\Extensions\Helpers\Controllers\RouteController@index');
+        });
+    }
+
+}

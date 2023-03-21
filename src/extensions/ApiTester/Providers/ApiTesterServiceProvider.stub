@@ -1,0 +1,16 @@
+<?php
+
+namespace Ashiful\Extensions\ApiTester\Providers;
+
+use Ashiful\Extensions\ApiTester\Services\ApiTester;
+use Illuminate\Support\ServiceProvider;
+
+class ApiTesterServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'api-tester');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        ApiTester::boot();
+    }
+}

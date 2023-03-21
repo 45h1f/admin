@@ -1,0 +1,44 @@
+<?php
+
+namespace Ashiful\Extensions\ApiTester\Services;
+
+use App\Admin;
+
+trait BootExtension
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        static::importAssets();
+
+        Admin::extend('api-tester', __CLASS__);
+    }
+
+    /**
+     * Register routes for laravel-admin.
+     *
+     * @return void
+     */
+    protected static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->get('api-tester', [ApiTesterController::class, 'index'])->name('api-tester-index');
+            $router->post('api-tester/handle', [ApiTesterController::class, 'handle'])->name('api-tester-handle');
+        });
+    }
+
+
+
+    /**
+     * Import assets into laravel-admin.
+     */
+    public static function importAssets()
+    {
+        Admin::js('.../Extensions/ApiTester/resources/assets/prism.js');
+        Admin::css('.../Extensions/ApiTester/resources/assets/prism.css');
+    }
+}

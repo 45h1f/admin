@@ -49,7 +49,8 @@ class  ExtensionCommand extends Command
             'LogViewer',
             'Helpers',
             'Backup',
-            'Config'
+            'Config',
+            'ApiTester'
         ];
     }
 
@@ -112,6 +113,17 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Config.stub", base_path("Extensions/{$item}/Services/Config.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_040159_create_config_table.php", base_path("extensions/{$item}/migrations/2023_03_21_040159_create_config_table.php"), base_path("extensions/{$item}/migrations"));
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_173148_import_config_extension.php", base_path("extensions/{$item}/migrations/2023_03_21_173148_import_config_extension.php"), base_path("extensions/{$item}/migrations"));
+
+        } elseif ($item == 'ApiTester') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/ApiTesterServiceProvider.stub", base_path("Extensions/{$item}/Providers/ApiTesterServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/ApiTesterController.stub", base_path("Extensions/{$item}/Controllers/ApiTesterController.php"), base_path("Extensions/{$item}/Controllers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/ApiLogger.stub", base_path("Extensions/{$item}/Services/ApiLogger.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/ApiTester.stub", base_path("Extensions/{$item}/Services/ApiTester.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/BootExtension.stub", base_path("Extensions/{$item}/Services/BootExtension.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_api_tester_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_api_tester_extension.php"), base_path("extensions/{$item}/migrations"));
+
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 
         }
 

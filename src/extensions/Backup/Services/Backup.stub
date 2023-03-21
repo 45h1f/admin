@@ -1,0 +1,53 @@
+<?php
+
+namespace Ashiful\Extensions\Backup\Services;
+
+
+use App\Admin;
+use App\Extension;
+use Spatie\Backup\Commands\ListCommand;
+use Spatie\Backup\Tasks\Monitor\BackupDestinationStatus;
+use Spatie\Backup\Tasks\Monitor\BackupDestinationStatusFactory;
+use Ashiful\Extensions\Backup\Controllers\BackupController;
+
+class Backup extends Extension
+{
+    public function getExists()
+    {
+        $statuses = BackupDestinationStatusFactory::createForMonitorConfig(config('backup.monitor_backups'));
+
+        $listCommand = new ListCommand();
+
+        $rows = $statuses->map(function (BackupDestinationStatus $backupDestinationStatus) use ($listCommand) {
+            return $listCommand->convertToRow($backupDestinationStatus);
+        })->all();
+
+        foreach ($statuses as $index => $status) {
+            $name = $status->backupDestination()->backupName();
+
+            $files = array_map('basename', $status->backupDestination()->disk()->allFiles($name));
+
+            $rows[$index]['files'] = array_slice(array_reverse($files), 0, 30);
+        }
+
+        return $rows;
+    }
+
+
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        Admin::extend('backup', __CLASS__);
+    }
+
+    protected static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->get('backup', [BackupController::class, 'index'])->name('backup-list');
+            $router->get('backup/download', [BackupController::class, 'download'])->name('backup-download');
+            $router->post('backup/run', [BackupController::class, 'run'])->name('backup-run');
+            $router->delete('backup/delete', [BackupController::class, 'delete'])->name('backup-delete');
+        });
+    }
+}

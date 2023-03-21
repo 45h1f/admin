@@ -1,0 +1,19 @@
+<?php
+
+namespace Ashiful\Extensions\Backup\Providers;
+
+use Ashiful\Extensions\Backup\Services\Backup;
+use Illuminate\Support\ServiceProvider;
+
+class BackupServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-admin-backup');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        Backup::boot();
+    }
+}

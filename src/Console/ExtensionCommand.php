@@ -36,6 +36,7 @@ class  ExtensionCommand extends Command
             } else {
                 $this->copyFiles($item);
                 $this->addProviderInConfig("\Ashiful\Extensions\\" . $item . "\Providers\\" . $item . "ServiceProvider::class,");
+                $this->alert('php artisan migrate');
                 $this->info($item . ' Extension Added successfully');
             }
         } else {
@@ -48,7 +49,8 @@ class  ExtensionCommand extends Command
     {
         return [
             'LogViewer',
-            'Helpers'
+            'Helpers',
+            'Backup'
         ];
     }
 
@@ -74,8 +76,8 @@ class  ExtensionCommand extends Command
     {
         $installer = new InstallCommand();
         if ($item == 'LogViewer') {
-            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/LogController.stub", base_path("Extensions/{$item}/Controllers/LogController.php"), base_path("Extensions/{$item}/Controllers"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/LogViewerServiceProvider.stub", base_path("Extensions/{$item}/Providers/LogViewerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/LogController.stub", base_path("Extensions/{$item}/Controllers/LogController.php"), base_path("Extensions/{$item}/Controllers"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/resources/views/logs.blade.php", base_path("Extensions/{$item}/resources/views/logs.blade.php"), base_path("Extensions/{$item}/resources/views"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/LogViewer.stub", base_path("Extensions/{$item}/Services/LogViewer.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Traits/BootExtension.stub", base_path("Extensions/{$item}/Traits/BootExtension.php"), base_path("Extensions/{$item}/Traits"));
@@ -96,8 +98,15 @@ class  ExtensionCommand extends Command
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/Scaffold/stubs", base_path("extensions/{$item}/Scaffold/stubs"));
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_20_173148_import_helper_extension.php", base_path("extensions/{$item}/migrations/2023_03_20_173148_import_helper_extension.php"), base_path("extensions/{$item}/migrations"));
 
-        }
+        } elseif ($item == 'Backup') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/BackupServiceProvider.stub", base_path("Extensions/{$item}/Providers/BackupServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/BackupController.stub", base_path("Extensions/{$item}/Controllers/BackupController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/resources/views/index.blade.php", base_path("extensions/{$item}/resources/views/index.blade.php"), base_path("extensions/{$item}/resources/views"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Backup.stub", base_path("Extensions/{$item}/Services/Backup.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_173148_import_backup_extension.php", base_path("extensions/{$item}/migrations/2023_03_21_173148_import_backup_extension.php"), base_path("extensions/{$item}/migrations"));
 
+            $this->alert('composer require spatie/laravel-backup');
+        }
 
     }
 

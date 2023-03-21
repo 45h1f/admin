@@ -3,8 +3,6 @@
 namespace Ashiful\Admin\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\File;
 
 class  ExtensionCommand extends Command
 {
@@ -50,7 +48,8 @@ class  ExtensionCommand extends Command
         return [
             'LogViewer',
             'Helpers',
-            'Backup'
+            'Backup',
+            'Config'
         ];
     }
 
@@ -104,8 +103,16 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/resources/views/index.blade.php", base_path("extensions/{$item}/resources/views/index.blade.php"), base_path("extensions/{$item}/resources/views"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Backup.stub", base_path("Extensions/{$item}/Services/Backup.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_173148_import_backup_extension.php", base_path("extensions/{$item}/migrations/2023_03_21_173148_import_backup_extension.php"), base_path("extensions/{$item}/migrations"));
-
             $this->alert('composer require spatie/laravel-backup');
+        } elseif ($item == 'Config') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/ConfigServiceProvider.stub", base_path("Extensions/{$item}/Providers/ConfigServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/ConfigController.stub", base_path("Extensions/{$item}/Controllers/ConfigController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Models/Config.stub", base_path("Extensions/{$item}/Models/Config.php"), base_path("Extensions/{$item}/Models"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Config.stub", base_path("Extensions/{$item}/Services/Config.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_040159_create_config_table.php", base_path("extensions/{$item}/migrations/2023_03_21_040159_create_config_table.php"), base_path("extensions/{$item}/migrations"));
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_21_173148_import_config_extension.php", base_path("extensions/{$item}/migrations/2023_03_21_173148_import_config_extension.php"), base_path("extensions/{$item}/migrations"));
+
         }
 
     }

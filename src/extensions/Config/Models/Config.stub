@@ -1,0 +1,13 @@
+<?php
+
+namespace Ashiful\Extensions\Config\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Config extends Model
+{
+    public function setValueAttribute($value = null)
+    {
+        $this->attributes['value'] = is_null($value) ? '' : $value;
+    }
+}

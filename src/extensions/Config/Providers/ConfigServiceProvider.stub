@@ -1,0 +1,19 @@
+<?php
+
+namespace Ashiful\Extensions\Config\Providers;
+
+use Ashiful\Extensions\Config\Services\Config;
+use Illuminate\Support\ServiceProvider;
+
+class ConfigServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+
+        Config::boot();
+    }
+}

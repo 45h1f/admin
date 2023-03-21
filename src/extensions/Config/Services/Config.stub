@@ -1,0 +1,49 @@
+<?php
+
+namespace Ashiful\Extensions\Config\Services;
+
+use App\Admin;
+use App\Extension;
+use Ashiful\Extensions\Config\Controllers\ConfigController;
+
+
+class Config extends Extension
+{
+    /**
+     * Load configure into laravel from database.
+     *
+     * @return void
+     */
+    public static function load()
+    {
+        foreach (\Ashiful\Extensions\Config\Models\Config::all(['name', 'value']) as $config) {
+            config([$config['name'] => $config['value']]);
+        }
+    }
+
+    /**
+     * Bootstrap this package.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        Admin::extend('config', __CLASS__);
+    }
+
+    /**
+     * Register routes for laravel-admin.
+     *
+     * @return void
+     */
+    protected static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->resource('config', ConfigController::class);
+        });
+    }
+
+
+}

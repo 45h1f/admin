@@ -1,0 +1,19 @@
+<?php
+
+namespace Ashiful\Extensions\Scheduling\Providers;
+
+use Ashiful\Extensions\Scheduling\Services\Scheduling;
+use Illuminate\Support\ServiceProvider;
+
+class SchedulingServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-admin-scheduling');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        Scheduling::boot();
+    }
+}

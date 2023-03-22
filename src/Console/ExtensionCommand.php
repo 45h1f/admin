@@ -51,7 +51,8 @@ class  ExtensionCommand extends Command
             'Backup',
             'Config',
             'ApiTester',
-            "MediaManager"
+            "MediaManager",
+            "Scheduling"
         ];
     }
 
@@ -135,6 +136,18 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/BootExtension.stub", base_path("Extensions/{$item}/Services/BootExtension.php"), base_path("Extensions/{$item}/Services"));
 
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_media_manager_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_media_manager_extension.php"), base_path("extensions/{$item}/migrations"));
+
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'Scheduling') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/SchedulingServiceProvider.stub", base_path("Extensions/{$item}/Providers/SchedulingServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/SchedulingController.stub", base_path("Extensions/{$item}/Controllers/SchedulingController.php"), base_path("Extensions/{$item}/Controllers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/CronSchedule.stub", base_path("Extensions/{$item}/Services/CronSchedule.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Scheduling.stub", base_path("Extensions/{$item}/Services/Scheduling.php"), base_path("Extensions/{$item}/Services"));
+
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_scheduling_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_scheduling_extension.php"), base_path("extensions/{$item}/migrations"));
 
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 

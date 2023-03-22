@@ -1,0 +1,37 @@
+<?php
+
+namespace Ashiful\Extensions\MediaManager\Services;
+
+use App\Admin;
+use Ashiful\Extensions\MediaManager\Controllers\MediaController;
+
+trait BootExtension
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function boot()
+    {
+        static::registerRoutes();
+
+        Admin::extend('media-manager', __CLASS__);
+    }
+
+    /**
+     * Register routes for laravel-admin.
+     *
+     * @return void
+     */
+    protected static function registerRoutes()
+    {
+        parent::routes(function ($router) {
+            $router->get('media', [MediaController::class, 'index'])->name('media-index');
+            $router->get('media/download', [MediaController::class, 'download'])->name('media-download');
+            $router->delete('media/delete', [MediaController::class, 'delete'])->name('media-delete');
+            $router->put('media/move', [MediaController::class, 'move'])->name('media-move');
+            $router->post('media/upload', [MediaController::class, 'upload'])->name('media-upload');
+            $router->post('media/folder', [MediaController::class, 'newFolder'])->name('media-new-folder');
+        });
+    }
+
+}

@@ -50,7 +50,8 @@ class  ExtensionCommand extends Command
             'Helpers',
             'Backup',
             'Config',
-            'ApiTester'
+            'ApiTester',
+            "MediaManager"
         ];
     }
 
@@ -122,6 +123,18 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/ApiTester.stub", base_path("Extensions/{$item}/Services/ApiTester.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/BootExtension.stub", base_path("Extensions/{$item}/Services/BootExtension.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_api_tester_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_api_tester_extension.php"), base_path("extensions/{$item}/migrations"));
+
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'MediaManager') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/MediaManagerServiceProvider.stub", base_path("Extensions/{$item}/Providers/MediaManagerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/MediaController.stub", base_path("Extensions/{$item}/Controllers/MediaController.php"), base_path("Extensions/{$item}/Controllers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/MediaManager.stub", base_path("Extensions/{$item}/Services/MediaManager.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/BootExtension.stub", base_path("Extensions/{$item}/Services/BootExtension.php"), base_path("Extensions/{$item}/Services"));
+
+            $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_media_manager_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_media_manager_extension.php"), base_path("extensions/{$item}/migrations"));
 
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 

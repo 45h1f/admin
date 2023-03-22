@@ -3,9 +3,8 @@
 use App\Models\Menu;
 use App\Models\Permission;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Arr;
 
-class ImportApiTesterExtension extends Migration
+class ImportMediaManagerExtension extends Migration
 {
 
     public function up()
@@ -15,13 +14,14 @@ class ImportApiTesterExtension extends Migration
         $root = [
             'parent_id' => 0,
             'order' => $lastOrder++,
-            'title' => 'Api tester',
-            'icon' => 'fa-sliders',
-            'uri' => 'api-tester',
+            'title' => 'Media manager',
+            'icon' => 'fa-file',
+            'uri' => 'media',
         ];
 
         Menu::create($root);
-        $this->createPermission('Api tester', 'ext.api-tester', 'api-tester*');
+
+        $this->createPermission('Media manager', 'ext.media-manager', 'media*');
     }
 
     public function down()

@@ -1,0 +1,38 @@
+<?php
+
+namespace Ashiful\Extensions\Screenfull\Providers;
+
+use Ashiful\Extensions\Screenfull\Services\Screenfull;
+use App\Facades\Admin;
+use App\Widgets\Navbar;
+use Illuminate\Support\ServiceProvider;
+
+class ScreenfullServiceProvider extends ServiceProvider
+{
+    public function boot(Screenfull $extension)
+    {
+        if (!Screenfull::boot()) {
+            return;
+        }
+
+        Admin::booting(function () {
+
+            Admin::js('.../Extensions/Screenfull/resources/assets/screenfull.min.js');
+            Admin::script($this->script());
+            Admin::navbar(function (Navbar $navbar) {
+                $navbar->right('<li><a id="screenfull-toggle"><i class="fa fa-arrows-alt"></i></a></li>');
+            });
+        });
+    }
+
+    private function script()
+    {
+        return <<<JS
+$("#screenfull-toggle").click(function () {
+    if (screenfull.isEnabled) {
+        screenfull.toggle($("body")[0])
+    }
+});
+JS;
+    }
+}

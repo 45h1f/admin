@@ -55,7 +55,8 @@ class  ExtensionCommand extends Command
             "Scheduling",
             "LargeFileUpload",
             "MultiLanguage",
-            "PHPInfo"
+            "PHPInfo",
+            "Screenfull"
         ];
     }
 
@@ -197,6 +198,11 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 
+        } elseif ($item == 'Screenfull') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/ScreenfullServiceProvider.stub", base_path("Extensions/{$item}/Providers/ScreenfullServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Screenfull.stub", base_path("Extensions/{$item}/Services/Screenfull.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
         }
 
     }

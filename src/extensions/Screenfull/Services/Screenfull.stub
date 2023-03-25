@@ -1,0 +1,13 @@
+<?php
+
+namespace Ashiful\Extensions\Screenfull\Services;
+
+
+use App\Extension;
+
+class Screenfull extends Extension
+{
+    public $name = 'screenfull';
+
+    public $assets = __DIR__ . '/../resources/assets';
+}

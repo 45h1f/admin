@@ -59,7 +59,8 @@ class  ExtensionCommand extends Command
             "Screenfull",
             "EnvManager",
             "ComposerViewer",
-            "Summernote"
+            "Summernote",
+            "GridSortable"
         ];
     }
 
@@ -225,6 +226,17 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Editor.stub", base_path("Extensions/{$item}/Services/Editor.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Summernote.stub", base_path("Extensions/{$item}/Services/Summernote.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'GridSortable') {
+            $this->alert('composer require spatie/eloquent-sortable');
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/GridSortableController.stub", base_path("Extensions/{$item}/Controllers/GridSortableController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/GridSortableServiceProvider.stub", base_path("Extensions/{$item}/Providers/GridSortableServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/GridSortable.stub", base_path("Extensions/{$item}/Services/GridSortable.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/SaveOrderBtn.stub", base_path("Extensions/{$item}/Services/SaveOrderBtn.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/SortableDisplay.stub", base_path("Extensions/{$item}/Services/SortableDisplay.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
+
 
         }
 

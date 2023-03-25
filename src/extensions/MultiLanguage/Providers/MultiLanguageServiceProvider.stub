@@ -1,0 +1,39 @@
+<?php
+
+namespace Ashiful\Extensions\MultiLanguage\Providers;
+
+use App\Facades\Admin;
+use Ashiful\Extensions\MultiLanguage\Controllers\MultiLanguageController;
+use Ashiful\Extensions\MultiLanguage\Middlewares\MultiLanguageMiddleware;
+use Ashiful\Extensions\MultiLanguage\Services\MultiLanguage;
+
+use Ashiful\Extensions\MultiLanguage\Widgets\LanguageMenu;
+use Illuminate\Support\ServiceProvider;
+
+class MultiLanguageServiceProvider extends ServiceProvider
+{
+
+    public function boot(MultiLanguage $extension)
+    {
+        if (!MultiLanguage::boot()) {
+            return;
+        }
+
+        if ($views = $extension->views()) {
+            $this->loadViewsFrom($views, 'multi-language');
+        }
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+
+        $this->app->booted(function () {
+            MultiLanguage::routes(__DIR__ . '/../routes/web.php');
+        });
+
+        $this->app['router']->pushMiddlewareToGroup('web', MultiLanguageMiddleware::class);
+        if (MultiLanguage::config("show-navbar", true)) {
+            Admin::navbar()->add(new LanguageMenu());
+        }
+
+    }
+
+
+}

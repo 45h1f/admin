@@ -52,7 +52,9 @@ class  ExtensionCommand extends Command
             'Config',
             'ApiTester',
             "MediaManager",
-            "Scheduling"
+            "Scheduling",
+            "LargeFileUpload",
+            "MultiLanguage"
         ];
     }
 
@@ -61,8 +63,7 @@ class  ExtensionCommand extends Command
         $config_file = config_path('app.php');
         $config_content = file_get_contents($config_file);
 
-        $keyPosition = strpos($config_content, "{
-                    $new_provider}");
+        $keyPosition = strpos($config_content, "{$new_provider}");
 
         if (!$keyPosition) {
             $regText = 'App\Providers\RouteServiceProvider::class,';
@@ -148,6 +149,42 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Scheduling.stub", base_path("Extensions/{$item}/Services/Scheduling.php"), base_path("Extensions/{$item}/Services"));
 
             $installer->copy_file(__DIR__ . " /../extensions/{$item}/migrations/2023_03_19_173148_import_scheduling_extension.php", base_path("extensions/{$item}/migrations/2023_03_19_173148_import_scheduling_extension.php"), base_path("extensions/{$item}/migrations"));
+
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'LargeFileUpload') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/LargeFileUploadServiceProvider.stub", base_path("Extensions/{$item}/Providers/LargeFileUploadServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/LargeFileField.stub", base_path("Extensions/{$item}/Services/LargeFileField.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/LargeFileUpload.stub", base_path("Extensions/{$item}/Services/LargeFileUpload.php"), base_path("Extensions/{$item}/Services"));
+
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+
+            $config_file = base_path('bootstrap/admin_app.php');
+            $config_content = file_get_contents($config_file);
+            $new_form = "Form::extend('largefile', \Ashiful\Extensions\LargeFileUpload\Services\LargeFileField::class);";
+            $keyPosition = strpos($config_content, "{ $new_form}");
+
+            if (!$keyPosition) {
+                $regForm = "Form::forget(['map', 'editor']);";
+                $regFormCheck = strpos($config_content, "{$regForm}");
+                $begin = substr($config_content, 0, $regFormCheck + 42);
+                $end = substr($config_content, $regFormCheck + 42);
+                $config_contentUpdate = $begin . "\n" . $new_form . "\n" . $end;
+                file_put_contents($config_file, $config_contentUpdate);
+            }
+
+        } elseif ($item == 'MultiLanguage') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/MultiLanguageServiceProvider.stub", base_path("Extensions/{$item}/Providers/MultiLanguageServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/MultiLanguageController.stub", base_path("Extensions/{$item}/Controllers/MultiLanguageController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Middlewares/MultiLanguageMiddleware.stub", base_path("Extensions/{$item}/Middlewares/MultiLanguageMiddleware.php"), base_path("Extensions/{$item}/Middlewares"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/MultiLanguage.stub", base_path("Extensions/{$item}/Services/MultiLanguage.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Widgets/LanguageMenu.stub", base_path("Extensions/{$item}/Widgets/LanguageMenu.php"), base_path("Extensions/{$item}/Widgets"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
 
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 

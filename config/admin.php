@@ -366,6 +366,16 @@ return [
     |
     */
     'extensions' => [
-
+        'multi-language' => [
+            'enable' => true,
+            'languages' => [
+                'en' => 'English',
+                'bn' => 'Bangla',
+            ],
+            'default' => 'en',
+            'show-login-page' => true,
+            'show-navbar' => true,
+            'cookie-name' => 'locale'
+        ],
     ],
 ];

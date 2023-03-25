@@ -1,0 +1,34 @@
+<?php
+
+namespace Ashiful\Extensions\LargeFileUpload\Providers;
+
+use App\Admin;
+use Ashiful\Extensions\LargeFileUpload\Services\LargeFileUpload;
+use Illuminate\Support\ServiceProvider;
+
+class LargeFileUploadServiceProvider extends ServiceProvider
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(LargeFileUpload $extension)
+    {
+        if (! LargeFileUpload::boot()) {
+            return ;
+        }
+
+
+
+        if ($views = $extension->views()) {
+            $this->loadViewsFrom($views, 'large-file-field');
+        }
+
+        Admin::booting(function (){
+            Admin::js('../../Extensions/LargeFileUpload/resources/assets/js/aetherupload.admin.js');
+            Admin::js('../../Extensions/LargeFileUpload/resources/assets/js/bootstrap.file-input.js');
+            Admin::js('../../Extensions/LargeFileUpload/resources/assets/js/spark-md5.min.js');
+        });
+
+    }
+
+}

@@ -389,6 +389,10 @@ return [
         ],
         'env-manager' => [
             'enable' => true
+        ],
+        'composer-viewer' => [
+            'enable' => true,
+            'which-composer' => '/usr/local/bin/composer', // !! it's important !!
         ]
     ],
 ];

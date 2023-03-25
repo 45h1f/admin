@@ -57,7 +57,8 @@ class  ExtensionCommand extends Command
             "MultiLanguage",
             "PHPInfo",
             "Screenfull",
-            "EnvManager"
+            "EnvManager",
+            "ComposerViewer"
         ];
     }
 
@@ -210,6 +211,14 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/EnvManagerServiceProvider.stub", base_path("Extensions/{$item}/Providers/EnvManagerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/EnvManager.stub", base_path("Extensions/{$item}/Services/EnvManager.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
+        } elseif ($item == 'ComposerViewer') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/ComposerViewerController.stub", base_path("Extensions/{$item}/Controllers/ComposerViewerController.php"), base_path("Extensions/{$item}/Controllers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/ComposerViewerServiceProvider.stub", base_path("Extensions/{$item}/Providers/ComposerViewerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/ComposerViewer.stub", base_path("Extensions/{$item}/Services/ComposerViewer.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
         }
 
     }

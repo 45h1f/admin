@@ -58,7 +58,8 @@ class  ExtensionCommand extends Command
             "PHPInfo",
             "Screenfull",
             "EnvManager",
-            "ComposerViewer"
+            "ComposerViewer",
+            "Summernote"
         ];
     }
 
@@ -217,6 +218,12 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/ComposerViewerServiceProvider.stub", base_path("Extensions/{$item}/Providers/ComposerViewerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/ComposerViewer.stub", base_path("Extensions/{$item}/Services/ComposerViewer.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'Summernote') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/SummernoteServiceProvider.stub", base_path("Extensions/{$item}/Providers/SummernoteServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Editor.stub", base_path("Extensions/{$item}/Services/Editor.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Summernote.stub", base_path("Extensions/{$item}/Services/Summernote.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 
         }

@@ -393,6 +393,12 @@ return [
         'composer-viewer' => [
             'enable' => true,
             'which-composer' => '/usr/local/bin/composer', // !! it's important !!
+        ],
+        'summernote' => [
+            'enable' => true,
+            'config' => [
+
+            ]
         ]
     ],
 ];

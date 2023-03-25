@@ -56,7 +56,8 @@ class  ExtensionCommand extends Command
             "LargeFileUpload",
             "MultiLanguage",
             "PHPInfo",
-            "Screenfull"
+            "Screenfull",
+            "EnvManager"
         ];
     }
 
@@ -203,6 +204,12 @@ class  ExtensionCommand extends Command
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/Screenfull.stub", base_path("Extensions/{$item}/Services/Screenfull.php"), base_path("Extensions/{$item}/Services"));
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+        } elseif ($item == 'EnvManager') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Controllers/EnvManagerController.stub", base_path("Extensions/{$item}/Controllers/EnvManagerController.php"), base_path("Extensions/{$item}/Controllers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Models/Env.stub", base_path("Extensions/{$item}/Models/Env.php"), base_path("Extensions/{$item}/Models"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/EnvManagerServiceProvider.stub", base_path("Extensions/{$item}/Providers/EnvManagerServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/EnvManager.stub", base_path("Extensions/{$item}/Services/EnvManager.php"), base_path("Extensions/{$item}/Services"));
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
         }
 
     }

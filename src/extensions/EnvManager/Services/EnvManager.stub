@@ -1,0 +1,16 @@
+<?php
+
+namespace Ashiful\Extensions\EnvManager\Services;
+
+use App\Extension;
+
+class EnvManager extends Extension
+{
+    public $name = 'env-manager';
+
+    public $menu = [
+        'title' => 'EnvManager',
+        'path'  => 'env-manager',
+        'icon'  => 'fa-gears',
+    ];
+}

@@ -383,7 +383,11 @@ return [
             'what' => INFO_ALL,
             // Set access path，defaults to `phpinfo`
             //'path' => '~phpinfo',
-        ], 'screenfull' => [
+        ],
+        'screenfull' => [
+            'enable' => true
+        ],
+        'env-manager' => [
             'enable' => true
         ]
     ],

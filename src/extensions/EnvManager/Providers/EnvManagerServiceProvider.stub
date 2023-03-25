@@ -1,0 +1,20 @@
+<?php
+
+namespace Ashiful\Extensions\EnvManager\Providers;
+
+use Ashiful\Extensions\EnvManager\Services\EnvManager;
+use Illuminate\Support\ServiceProvider;
+
+class EnvManagerServiceProvider extends ServiceProvider
+{
+    public function boot(EnvManager $extension)
+    {
+        if (! EnvManager::boot()) {
+            return ;
+        }
+
+        $this->app->booted(function () {
+            EnvManager::routes(__DIR__.'/../routes/web.php');
+        });
+    }
+}

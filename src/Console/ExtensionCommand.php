@@ -54,7 +54,8 @@ class  ExtensionCommand extends Command
             "MediaManager",
             "Scheduling",
             "LargeFileUpload",
-            "MultiLanguage"
+            "MultiLanguage",
+            "PHPInfo"
         ];
     }
 
@@ -186,6 +187,14 @@ class  ExtensionCommand extends Command
 
             $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
 
+            $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
+
+        } elseif ($item == 'PHPInfo') {
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Providers/PHPInfoServiceProvider.stub", base_path("Extensions/{$item}/Providers/PHPInfoServiceProvider.php"), base_path("Extensions/{$item}/Providers"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/Services/PHPInfo.stub", base_path("Extensions/{$item}/Services/PHPInfo.php"), base_path("Extensions/{$item}/Services"));
+
+            $installer->copy_file(__DIR__ . "/../extensions/{$item}/routes/web.php", base_path("Extensions/{$item}/routes/web.php"), base_path("Extensions/{$item}/routes"));
             $installer->copy_dir(__DIR__ . " /../extensions/{$item}/resources", base_path("extensions/{$item}/resources"));
 
         }
